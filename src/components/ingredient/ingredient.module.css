@@ -1,0 +1,15 @@
+.ingredient {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 272px;
+    position: relative;
+  }
+  
+.title {
+    text-align: center;
+  }
+
+.price {
+    display: flex;
+  }
