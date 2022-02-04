@@ -5,8 +5,10 @@ import styles from "./ingredient-list.module.css";
 const IngredientList = (props) => {
   return (
     <section>
-      <h2 className="text text_type_main-medium mb-6 mt-10">{props.name}</h2>
-      <ul className={styles.ingredients + " ml-4 mr-2"}>
+      <h2 className="text text_type_main-medium mb-5 mt-10" ref={props.tabRef}>
+        {props.name}{" "}
+      </h2>
+      <ul className={`${styles.ingredients} ml-4 mr-2`}>
         {props.data.map((el) => {
           if (el.type === props.type) {
             return (
