@@ -4,6 +4,12 @@
   align-items: center;
   width: 272px;
   position: relative;
+  cursor: pointer;
+  transition: opacity 1s ease;
+}
+
+.ingredient:hover {
+  opacity: 0.6;
 }
 
 .title {

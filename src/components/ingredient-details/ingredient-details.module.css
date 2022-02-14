@@ -1,19 +1,21 @@
 .title {
-    height: 64px;
-    align-self: flex-start;
+  height: 64px;
+  align-self: flex-start;
+  display:flex;
+  align-items: center;
 }
 
 .info {
-    list-style: none;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0;
-    gap: 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0;
+  gap: 47px;
 }
 
 .info_item {
- display: flex;
- flex-direction: column;
- align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

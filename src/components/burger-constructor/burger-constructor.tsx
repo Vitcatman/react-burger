@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import { useState } from "react";
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -9,25 +9,14 @@ import {
 import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/proptypes";
 import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details"
-
-const BurgerItem = (props) => {
-  return (
-    <ConstructorElement
-      text={props.name}
-      price={props.price}
-      thumbnail={props.image}
-    />
-  );
-};
+import OrderDetails from "../order-details/order-details";
 
 const BurgerConstructor = (props) => {
   const finalPrice = props.data.reduce(
     (total, curValue) => total + curValue.price,
     0
   );
-  const bun = props.data.filter((item) => item.type === "bun");
-
+  const bun = props.data.find((item) => item.type === "bun");
   const [active, setActive] = useState(false);
   const toggleModal = () => setActive(!active);
 
@@ -43,11 +32,10 @@ const BurgerConstructor = (props) => {
           type="top"
           isLocked={true}
           text="Краторная булка N-200i (верх)"
-          price={bun[0].price}
-          thumbnail={bun[0].image}
+          price={bun.price}
+          thumbnail={bun.image}
         />
       </div>
-
       <ul className={`${styles.cart} custom-scroll`}>
         {props.data.map((el) => {
           if (el.type !== "bun") {
@@ -56,7 +44,11 @@ const BurgerConstructor = (props) => {
                 <div className={"mr-2"}>
                   <DragIcon type="primary" />
                 </div>
-                <BurgerItem {...el} />
+                <ConstructorElement
+                  text={el.name}
+                  price={el.price}
+                  thumbnail={el.image}
+                />
               </li>
             );
           } else {
@@ -64,27 +56,23 @@ const BurgerConstructor = (props) => {
           }
         })}
       </ul>
-
       <div className={`ml-7 pl-5`}>
         <ConstructorElement
           type="bottom"
           isLocked={true}
           text="Краторная булка N-200i (низ)"
-          price={bun[0].price}
-          thumbnail={bun[0].image}
+          price={bun.price}
+          thumbnail={bun.image}
         />
       </div>
-
       <div className={`${styles.total} mr-4 mt-10`}>
-
         <div className={`mr-10`}>
           <span className={"text text_type_digits-medium mr-2"}>
             {finalPrice}
           </span>
           <CurrencyIcon type="primary" />
         </div>
-
-        <Button type="primary" size="medium" onClick={() => {toggleModal()}}>
+        <Button type="primary" size="medium" onClick={toggleModal}>
           Оформить заказ
         </Button>
       </div>

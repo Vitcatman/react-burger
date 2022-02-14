@@ -6,7 +6,6 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
 const portalContainer = document.getElementById("modal");
-// const modalOverlay = ;
 
 const Modal = (props) => {
   useEffect(() => {
@@ -25,7 +24,7 @@ const Modal = (props) => {
     <>
       <ModalOverlay {...props} />
       <div className={styles.modal}>
-        <button className={styles.close_button} onClick={() => props.close()}>
+        <button className={styles.close_button} onClick={props.close}>
           <CloseIcon type="primary" />
         </button>
         {props.children}

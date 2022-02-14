@@ -1,13 +1,14 @@
-import styles from "./ingredient-details.module.css";
-import done from "../../images/done.png";
+import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const OrderDetails = () => {
   return (
     <>
       <div className={`mt-20 text text_type_digits-large`}>034536</div>
-      <p className={`text text_type_main-medium mt-8`}>идентификатор заказа</p>
-      <img className={`mt-15 mb-15`} src={done} alt="Заказ в обработке" />
-      <p className={`text text_type_main-default mt-4`}>
+      <p className={`text text_type_main-medium mt-8 mb-15`}>
+        идентификатор заказа
+      </p>
+      <CheckMarkIcon type="primary" />
+      <p className={`text text_type_main-default mt-15`}>
         Ваш заказ начали готовить
       </p>
       <p

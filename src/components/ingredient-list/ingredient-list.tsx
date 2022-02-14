@@ -8,7 +8,7 @@ import ingredientPropTypes from "../../utils/proptypes";
 
 const IngredientList = (props) => {
   const [active, setActive] = useState(null);
-  const toggleModal = (data) => setActive(data);
+  const toggleModal = () => setActive(null);
 
   return (
     <section>
@@ -27,7 +27,7 @@ const IngredientList = (props) => {
               <li
                 key={el._id}
                 onClick={() => {
-                  toggleModal(el);
+                  setActive(el);
                 }}
               >
                 <Ingredient {...el} />
@@ -46,7 +46,10 @@ IngredientList.propTypes = {
   data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  tabRef: PropTypes.any,
+  tabRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
 };
 
 export default IngredientList;
