@@ -12,11 +12,12 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 
 const BurgerConstructor = (props) => {
-  const finalPrice = props.data.reduce(
-    (total, curValue) => total + curValue.price,
-    0
-  );
+  const ingredients = props.data.filter((item) => item.type !== "bun");
   const bun = props.data.find((item) => item.type === "bun");
+  const finalPrice = ingredients.reduce(
+    (total, curValue) => total + curValue.price,
+    bun.price * 2
+  );
   const [active, setActive] = useState(false);
   const toggleModal = () => setActive(!active);
 
@@ -31,7 +32,7 @@ const BurgerConstructor = (props) => {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text="Краторная булка N-200i (верх)"
+          text={`${bun.name} (верх)`}
           price={bun.price}
           thumbnail={bun.image}
         />
@@ -60,7 +61,7 @@ const BurgerConstructor = (props) => {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text="Краторная булка N-200i (низ)"
+          text={`${bun.name} (низ)`}
           price={bun.price}
           thumbnail={bun.image}
         />
