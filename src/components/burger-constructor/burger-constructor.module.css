@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+.listitem {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.cart {
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 45vh;
+}
+
+.listitem:last-of-type {
+  margin-bottom: 0;
+}
+
+.total {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
