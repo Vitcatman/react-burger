@@ -5,6 +5,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/proptypes";
+import {IngredientsContext} from '../../services/ingredients-context';
 
 const IngredientList = (props) => {
   const [active, setActive] = useState(null);
