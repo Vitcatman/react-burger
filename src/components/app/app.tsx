@@ -21,7 +21,7 @@ const reducer = (state, action) => {
       return {...state, ingredients: action.payload}
 
     default:
-      throw new Error("Ошибка загрузки");
+      return {state};
   }
 }
 

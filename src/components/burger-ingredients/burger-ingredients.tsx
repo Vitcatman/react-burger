@@ -1,11 +1,9 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef} from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../ingredient-list/ingredient-list";
-import { IngredientsContext } from "../../services/ingredients-context";
 
 const BurgerIngredients = () => {
-  const { state } = useContext(IngredientsContext);
   const [current, setCurrent] = useState("Булки");
   const bunRef = useRef();
   const sauceRef = useRef();
@@ -43,19 +41,16 @@ const BurgerIngredients = () => {
       </div>
       <div className={`${styles.scroll} custom-scroll`}>
         <IngredientList
-          data={state.ingredients}
           name="Булки"
           type="bun"
           tabRef={bunRef}
         />
         <IngredientList
-          data={state.ingredients}
           name="Соусы"
           type="sauce"
           tabRef={sauceRef}
         />
         <IngredientList
-          data={state.ingredients}
           name="Начинки"
           type="main"
           tabRef={mainRef}
