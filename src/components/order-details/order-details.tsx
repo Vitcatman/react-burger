@@ -1,9 +1,13 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { OrderContext } from "../../services/order-context";
+import { useContext } from "react";
 
 const OrderDetails = () => {
+  const orderNumber = useContext(OrderContext);
+
   return (
     <>
-      <div className={`mt-20 text text_type_digits-large`}>034536</div>
+      <div className={`mt-20 text text_type_digits-large`}>{orderNumber}</div>
       <p className={`text text_type_main-medium mt-8 mb-15`}>
         идентификатор заказа
       </p>

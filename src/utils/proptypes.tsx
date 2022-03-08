@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const ingredientPropTypes = PropTypes.shape({
+const ingredients = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -15,4 +15,6 @@ const ingredientPropTypes = PropTypes.shape({
   __v: PropTypes.number.isRequired,
 });
 
-export default ingredientPropTypes;
+export default ingredients;
+
+

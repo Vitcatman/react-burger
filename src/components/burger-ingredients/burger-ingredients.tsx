@@ -1,11 +1,9 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef} from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../ingredient-list/ingredient-list";
-import PropTypes from "prop-types";
-import ingredientPropTypes from "../../utils/proptypes";
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = () => {
   const [current, setCurrent] = useState("Булки");
   const bunRef = useRef();
   const sauceRef = useRef();
@@ -43,19 +41,16 @@ const BurgerIngredients = (props) => {
       </div>
       <div className={`${styles.scroll} custom-scroll`}>
         <IngredientList
-          data={props.data}
           name="Булки"
           type="bun"
           tabRef={bunRef}
         />
         <IngredientList
-          data={props.data}
           name="Соусы"
           type="sauce"
           tabRef={sauceRef}
         />
         <IngredientList
-          data={props.data}
           name="Начинки"
           type="main"
           tabRef={mainRef}
@@ -63,10 +58,6 @@ const BurgerIngredients = (props) => {
       </div>
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
 };
 
 export default BurgerIngredients;

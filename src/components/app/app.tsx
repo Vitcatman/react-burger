@@ -1,19 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import style from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
+import {IngredientsContext} from '../../services/ingredients-context';
+
 
 const ingredientsApi = "https://norma.nomoreparties.space/api/ingredients";
 
-function App() {
-  const [state, setState] = useState({
-    isLoading: true,
-    hasError: false,
-    data: [],
-  });
+const initialState = {
+  ingredients: [],
+  isLoading: true,
+  hasError: false
+}
 
-  const { isLoading, hasError } = state;
+const reducer = (state, action) => {
+
+  switch (action.type) {
+    case 'ingredients':
+      return {...state, ingredients: action.payload}
+
+    default:
+      return {state};
+  }
+}
+
+function App() {
+  const [state, dispatcher] = useReducer(reducer, initialState);
+
+  const [hasError, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+
 
   useEffect(() => {
     const getIngredients = async () => {
@@ -23,9 +41,11 @@ function App() {
           throw new Error("Ошибка загрузки");
         }
         const newData = await res.json();
-        setState({ ...state, data: newData.data, isLoading: false });
+        dispatcher({type:'ingredients', payload: newData.data})
+        setIsLoading(false);
       } catch (error) {
-        setState({ ...state, data: [], hasError: true });
+        setError(true);
+        dispatcher({type:'ingredients', payload: []})
         console.log(error);
       }
     };
@@ -37,8 +57,10 @@ function App() {
       <AppHeader />
       {!isLoading && !hasError && (
         <main className={style.main}>
-          <BurgerIngredients data={state.data} />
-          <BurgerConstructor data={state.data} />
+            <IngredientsContext.Provider value={{state}}>
+              <BurgerIngredients/>
+              <BurgerConstructor/>
+            </IngredientsContext.Provider>
         </main>
       )}
     </>
