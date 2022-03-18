@@ -4,33 +4,32 @@ import styles from "./ingredient-list.module.css";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
-import ingredientPropTypes from "../../utils/proptypes";
-import {IngredientsContext} from '../../services/ingredients-context';
+import { ingredientsSelector, showIngredientModal, hideIngredientModal} from '../../services/slices/ingredients-slice';
+import { useDispatch, useSelector } from 'react-redux'
 
 const IngredientList = (props) => {
-  const [active, setActive] = useState(null);
-  const toggleModal = () => setActive(null);
-  const { state } = useContext(IngredientsContext);
+  const dispatch = useDispatch();
+  const { ingredients, ingredientModalState, ingredientDetails } = useSelector(ingredientsSelector)
+
 
   return (
     <section>
-      {active && (
-        <Modal close={toggleModal}>
-          <IngredientDetails {...active} />
+      {ingredientModalState && (
+       // @ts-ignore
+        <Modal close={() => {dispatch(hideIngredientModal())}}>
+          <IngredientDetails {...ingredientDetails} />
         </Modal>
       )}
       <h2 className="text text_type_main-medium mb-5 mt-10" ref={props.tabRef}>
         {props.name}{" "}
       </h2>
       <ul className={`${styles.ingredients} ml-4 mr-2`}>
-        {state.ingredients.map((el) => {
+        {ingredients.map((el) => {
           if (el.type === props.type) {
             return (
               <li
                 key={el._id}
-                onClick={() => {
-                  setActive(el);
-                }}
+                onClick={() => {dispatch(showIngredientModal(el))}}
               >
                 <Ingredient {...el} />
               </li>

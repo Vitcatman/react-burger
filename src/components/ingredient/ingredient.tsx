@@ -4,27 +4,43 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient.module.css";
 import PropTypes from "prop-types";
+import { useDrag } from "react-dnd";
+import { useSelector } from "react-redux";
+import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 
-const Ingredient = (props) => {
+const Ingredient = (item) => {
+  const [, dragRef] = useDrag({
+    type: "ingredient",
+    item,
+  });
+
+  const { ingredientsConstructor } = useSelector(ingredientsSelector);
+
+  const counter = ingredientsConstructor.filter(
+    (i) => i._id === item._id
+  ).length;
+
   return (
-    <div className={`${styles.ingredient} mb-8`}>
-      <img className={" mr-4 ml-4"} src={props.image} alt={props.name} />
+    <div className={`${styles.ingredient} mb-8`} ref={dragRef}>
+      <img className={" mr-4 ml-4"} src={item.image} alt={item.name} />
       <div className={`${styles.price} mt-1 mb-1`}>
-        <p className="text text_type_digits-default mt-1 pr-2">{props.price}</p>
+        <p className="text text_type_digits-default mt-1 pr-2">{item.price}</p>
         <CurrencyIcon type="primary" />
       </div>
       <h3 className={`${styles.title} text text_type_main-default mt-1`}>
-        {props.name}
+        {item.name}
       </h3>
-      <Counter count={props.__v} size="default" />
+      <Counter count={counter} size="default" />
     </div>
   );
 };
 
 Ingredient.propTypes = {
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  __v: PropTypes.number.isRequired,
+  item: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    __v: PropTypes.number.isRequired,
+  }),
 };
 
 export default Ingredient;

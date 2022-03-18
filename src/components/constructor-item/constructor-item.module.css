@@ -1,0 +1,12 @@
+.ingr {
+  max-height: 8.2vh;
+  display: flex;
+  align-items: center;
+}
+
+.listitem {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
