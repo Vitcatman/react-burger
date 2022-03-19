@@ -3,10 +3,11 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient.module.css";
-import PropTypes from "prop-types";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import { ingredientsSelector } from "../../services/slices/ingredients-slice";
+import PropTypes from "prop-types";
+import ingredients from "../../utils/proptypes";
 
 const Ingredient = (item) => {
   const [, dragRef] = useDrag({
@@ -35,12 +36,6 @@ const Ingredient = (item) => {
   );
 };
 
-Ingredient.propTypes = {
-  item: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    __v: PropTypes.number.isRequired,
-  }),
-};
+Ingredient.propTypes = ingredients.isRequired;
 
 export default Ingredient;

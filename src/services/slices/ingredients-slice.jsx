@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
-
-const ingredientsApi = "https://norma.nomoreparties.space/api/ingredients";
+import { baseUrl } from "../../utils/data";
 
 const initialState = {
   ingredients: [],
@@ -104,7 +103,7 @@ export const fetchIngredients = createAsyncThunk(
   "ingredients/fetchIngredients",
   async () => {
     try {
-      const res = await fetch(ingredientsApi);
+      const res = await fetch(`${baseUrl}/ingredients`);
       const newData = await res.json();
       return newData;
     } catch (err) {
@@ -117,7 +116,7 @@ export const fetchOrder = createAsyncThunk(
   "ingredients/fetchOrder",
   async (ingredientsConstructor, { rejectWithValue }) => {
     try {
-      const res = await fetch("https://norma.nomoreparties.space/api/orders", {
+      const res = await fetch(`${baseUrl}/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

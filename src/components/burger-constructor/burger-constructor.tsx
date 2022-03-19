@@ -7,7 +7,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-
 import {
   ingredientsSelector,
   addIngredient,
@@ -24,8 +23,15 @@ const BurgerConstructor = () => {
   const { ingredientsConstructor, cartModalState } =
     useSelector(ingredientsSelector);
 
-  const ingr = ingredientsConstructor.filter((item) => item.type !== "bun");
-  const bun = ingredientsConstructor.find((item) => item.type === "bun");
+  const ingr = useMemo(
+    () => ingredientsConstructor.filter((item) => item.type !== "bun"),
+    [ingredientsConstructor]
+  );
+
+  const bun = useMemo(
+    () => ingredientsConstructor.find((item) => item.type === "bun"),
+    [ingredientsConstructor]
+  );
 
   const finalPrice = useMemo(() => {
     if (bun && ingredientsConstructor.length >= 1)
