@@ -6,18 +6,19 @@ import {
   BurgerIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink, Link } from 'react-router-dom';
 
 const AppHeader = () => {
   return (
     <header className={style.header}>
       <nav className={style.navbar}>
         <div className={style.main_navigation}>
-          <a href={"#"} className={`${style.link} mr-5`}>
+          <NavLink to={"/"} className={`${style.link} mr-5`}>
             <BurgerIcon type="primary" />
             <span className="text text_type_main-default ml-2">
               Конструктор
             </span>
-          </a>
+          </NavLink>
           <a href={"#"} className={`${style.link} ml-5`}>
             <ListIcon type="secondary" />
             <span className="text text_type_main-default text_color_inactive ml-2">
@@ -26,15 +27,15 @@ const AppHeader = () => {
           </a>
         </div>
         <div className={style.container}>
-          <a href={"#"} className={style.link}>
+          <NavLink to={"/"} className={style.link}>
             <Logo />
-          </a>
-          <a href={"#"} className={style.link}>
+          </NavLink>
+          <NavLink to={"/profile"} className={style.link}>
             <ProfileIcon type="secondary" />
             <span className="text text_type_main-default text_color_inactive ml-2">
               Личный кабинет
             </span>
-          </a>
+          </NavLink>
         </div>
       </nav>
     </header>

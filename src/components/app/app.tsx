@@ -1,36 +1,34 @@
-import { useState, useEffect, useReducer } from "react";
-import style from "./app.module.css";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchIngredients,
-  ingredientsSelector,
-} from "../../services/slices/ingredients-slice";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HomePage, Login, NotFound404, Register, ForgotPassword, ResetPassword, Profile } from "../../pages/index";
+import { ProtectedRoute } from '../protected-route/protected-route';
 
 function App() {
-  const dispatch = useDispatch();
-  const { isLoading, hasError } = useSelector(ingredientsSelector);
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
-
   return (
-    <>
-      <AppHeader />
-      {!isLoading && !hasError && (
-        <main className={style.main}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      )}
-    </>
+    <Router>
+      <Switch>
+        <Route path="/" exact={true}>
+          <HomePage />
+        </Route>
+        <Route path="/login" exact={true}>
+          <Login />
+        </Route>
+        <Route path="/register" exact={true}>
+          <Register />
+        </Route>
+        <Route path="/forgot-password" exact={true}>
+          <ForgotPassword />
+        </Route>
+        <Route path="/reset-password" exact={true}>
+          <ResetPassword />
+        </Route>
+        <ProtectedRoute path="/profile">
+          <Profile />
+        </ProtectedRoute>
+        <Route>
+          <NotFound404 />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

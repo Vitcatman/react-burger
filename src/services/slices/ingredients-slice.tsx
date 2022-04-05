@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
 import { baseUrl } from "../../utils/data";
+import { checkResponse} from "../../utils/check-response";
 
 const initialState = {
   ingredients: [],
@@ -77,10 +78,13 @@ const ingredientsSlice = createSlice({
       })
       .addCase(fetchIngredients.rejected, (state) => {
         state.isLoading = false;
+        // @ts-ignore
         state.hasError = `Проблема с загрузкой данных`;
       })
       .addCase(fetchOrder.pending, (state) => {
+        // @ts-ignore
         state.loading = true;
+        // @ts-ignore
         state.error = false;
         state.orderNumber = 0;
       })
@@ -92,7 +96,9 @@ const ingredientsSlice = createSlice({
         state.cartModalState = true;
       })
       .addCase(fetchOrder.rejected, (state) => {
+        // @ts-ignore
         state.loading = false;
+        // @ts-ignore
         state.error = `Ошибка отправки заказа`;
       })
       .addDefaultCase(() => {});
@@ -104,9 +110,10 @@ export const fetchIngredients = createAsyncThunk(
   async () => {
     try {
       const res = await fetch(`${baseUrl}/ingredients`);
-      const newData = await res.json();
+      const newData = await checkResponse(res);
       return newData;
     } catch (err) {
+      // @ts-ignore
       return rejectWithValue(err.message);
     }
   }
@@ -120,12 +127,14 @@ export const fetchOrder = createAsyncThunk(
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // @ts-ignore
           ingredients: ingredientsConstructor.map((el) => el._id),
         }),
       });
-      const newData = await res.json();
+      const newData = await checkResponse(res);
       return newData;
     } catch (err) {
+      // @ts-ignore
       return rejectWithValue(err.message);
     }
   }
@@ -133,7 +142,7 @@ export const fetchOrder = createAsyncThunk(
 
 export const ingredientsSelector = (state) => state.ingredients;
 
-const { actions, reducer } = ingredientsSlice;
+export const ingredientsReducer = ingredientsSlice.reducer;
 
 export const {
   showIngredientModal,
@@ -143,6 +152,5 @@ export const {
   removeOrderModal,
   removeIngredient,
   closeOrderModal,
-} = actions;
+} = ingredientsSlice.actions;
 
-export default reducer;
