@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, Link, useLocation, Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import style from "./register.module.css";
+import {useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import AppHeader from "../../components/app-header/app-header";
 import styles from "./forgot-password.module.css";
 import {
-  Input,
-  PasswordInput,
-  Button,
+  Input, Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {forgotPassword, authorizationSelector} from '../../services/slices/authorization-slice';
+import {
+  forgotPassword,
+  authorizationSelector,
+} from "../../services/slices/authorization-slice";
 
 export const ForgotPassword = () => {
   const [formValue, setFormValue] = useState({
     email: "",
   });
 
-  const {forgotPasswordSuccess} = useSelector(authorizationSelector);
+  const { forgotPasswordSuccess } = useSelector(authorizationSelector);
   const dispatch = useDispatch();
 
   const formChange = (e) => {
@@ -27,14 +27,16 @@ export const ForgotPassword = () => {
   };
 
   const formSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // @ts-ignore
-    dispatch(forgotPassword(formValue))
-   }
+    dispatch(forgotPassword(formValue));
+  };
 
   return (
     <>
-    {forgotPasswordSuccess && (<Redirect to={{pathname: "/reset-password"}} />) }
+      {forgotPasswordSuccess && (
+        <Redirect to={{ pathname: "/reset-password" }} />
+      )}
       <AppHeader />
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium`}>
@@ -42,7 +44,6 @@ export const ForgotPassword = () => {
         </h1>
 
         <form className={`${styles.form} mb-20`} onSubmit={formSubmit}>
-          
           <Input
             type={"email"}
             placeholder={"Укажите E-mail"}
@@ -53,18 +54,24 @@ export const ForgotPassword = () => {
             errorText={"Ошибка"}
             size={"default"}
           />
-          
+
           <Button type="primary" size="medium">
             Восстановить
           </Button>
         </form>
-       {/* { error && <span className={styles.error}>{error}</span> } */}
-       <div className={styles.links}>
-           <span className="text text_type_main-default text_color_inactive">Вспомнили пароль?</span>
-           <Link to="/login" className={`${styles.link} text text_type_main-default ml-2`}>Войти</Link>
-       </div>
+        {/* { error && <span className={styles.error}>{error}</span> } */}
+        <div className={styles.links}>
+          <span className="text text_type_main-default text_color_inactive">
+            Вспомнили пароль?
+          </span>
+          <Link
+            to="/login"
+            className={`${styles.link} text text_type_main-default ml-2`}
+          >
+            Войти
+          </Link>
+        </div>
       </div>
     </>
   );
 };
-

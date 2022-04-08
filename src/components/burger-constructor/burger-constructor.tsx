@@ -14,14 +14,18 @@ import {
   closeOrderModal,
   removeIngredient,
 } from "../../services/slices/ingredients-slice";
+import { authorizationSelector } from "../../services/slices/authorization-slice";
 import { useDispatch, useSelector } from "react-redux";
 import ConstructorItem from "../constructor-item/constructor-item";
 import { useDrop } from "react-dnd";
+import { useHistory } from "react-router-dom";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { ingredientsConstructor, cartModalState } =
     useSelector(ingredientsSelector);
+  const { isAuthorized } = useSelector(authorizationSelector);
 
   const ingr = useMemo(
     () => ingredientsConstructor.filter((item) => item.type !== "bun"),
@@ -32,6 +36,15 @@ const BurgerConstructor = () => {
     () => ingredientsConstructor.find((item) => item.type === "bun"),
     [ingredientsConstructor]
   );
+
+  const sendOrder = () => {
+    if (isAuthorized === false) {
+      history.replace({ pathname: "/login" });
+    } else {
+      // @ts-ignore
+      dispatch(fetchOrder(ingredientsConstructor));
+    }
+  };
 
   const finalPrice = useMemo(() => {
     if (bun && ingredientsConstructor.length >= 1)
@@ -124,7 +137,7 @@ const BurgerConstructor = () => {
             type="primary"
             size="medium"
             // @ts-ignore
-            onClick={() => dispatch(fetchOrder(ingredientsConstructor))}
+            onClick={sendOrder}
           >
             Оформить заказ
           </Button>

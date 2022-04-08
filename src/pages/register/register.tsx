@@ -8,17 +8,20 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {registerUser, authorizationSelector} from '../../services/slices/authorization-slice'
+import {
+  registerUser,
+  authorizationSelector,
+} from "../../services/slices/authorization-slice";
 
 export const Register = () => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
-    name: ""
+    name: "",
   });
 
   const dispatch = useDispatch();
-  const {isAuthorized} = useSelector(authorizationSelector);
+  const { isAuthorized } = useSelector(authorizationSelector);
 
   const formChange = (e) => {
     setFormValue({
@@ -28,19 +31,17 @@ export const Register = () => {
   };
 
   const formSubmit = (e) => {
-   e.preventDefault()
-   // @ts-ignore
-   dispatch(registerUser(formValue))
-  }
+    e.preventDefault();
+    // @ts-ignore
+    dispatch(registerUser(formValue));
+  };
 
   return (
     <>
-    {isAuthorized && (<Redirect to={{pathname: "/"}} />) }
+      {isAuthorized && <Redirect to={{ pathname: "/" }} />}
       <AppHeader />
       <div className={styles.main}>
-        <h1 className={`${styles.title} text_type_main-medium`}>
-          Регистрация
-        </h1>
+        <h1 className={`${styles.title} text_type_main-medium`}>Регистрация</h1>
 
         <form className={`${styles.form} mb-20`} onSubmit={formSubmit}>
           <Input
@@ -72,13 +73,19 @@ export const Register = () => {
             Зарегистрироваться
           </Button>
         </form>
-       {/* { error && <span className={styles.error}>{error}</span> } */}
-       <div className={styles.links}>
-           <span className="text text_type_main-default text_color_inactive">Уже зарегистрированы?</span>
-           <Link to="/login" className={`${styles.link} text text_type_main-default ml-2`}>Войти</Link>
-       </div>
+        {/* { error && <span className={styles.error}>{error}</span> } */}
+        <div className={styles.links}>
+          <span className="text text_type_main-default text_color_inactive">
+            Уже зарегистрированы?
+          </span>
+          <Link
+            to="/login"
+            className={`${styles.link} text text_type_main-default ml-2`}
+          >
+            Войти
+          </Link>
+        </div>
       </div>
     </>
   );
 };
-

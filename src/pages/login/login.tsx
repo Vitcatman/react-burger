@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import { Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link} from "react-router-dom";
 import AppHeader from "../../components/app-header/app-header";
 import styles from "./login.module.css";
 import {
@@ -9,7 +9,13 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {loginRequest, authorizationSelector, resetResetPassSuccess, resetForgotPassSuccess, resetError } from '../../services/slices/authorization-slice'
+import {
+  loginRequest,
+  authorizationSelector,
+  resetResetPassSuccess,
+  resetForgotPassSuccess,
+  resetError,
+} from "../../services/slices/authorization-slice";
 
 export const Login = () => {
   const [formValue, setFormValue] = useState({
@@ -24,30 +30,28 @@ export const Login = () => {
     });
   };
 
-  const {isAuthorized, hasError} = useSelector(authorizationSelector);
+  const { isAuthorized, hasError } = useSelector(authorizationSelector);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const formSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // @ts-ignore
-    dispatch(loginRequest(formValue))
-   }
+    dispatch(loginRequest(formValue));
+  };
 
-   useEffect(() => {
-    dispatch(resetError())
-    dispatch(resetForgotPassSuccess())
-    dispatch(resetResetPassSuccess())
-  }, []) 
+  useEffect(() => {
+    dispatch(resetError());
+    dispatch(resetForgotPassSuccess());
+    dispatch(resetResetPassSuccess());
+  }, []);
 
   return (
     <>
-    {isAuthorized && (<Redirect to={{ pathname: "/"}}/>)}
+      {isAuthorized && <Redirect to={{ pathname: "/" }} />}
       <AppHeader />
       <div className={styles.main}>
-        <h1 className={`${styles.title} text_type_main-medium`}>
-          Вход
-        </h1>
+        <h1 className={`${styles.title} text_type_main-medium`}>Вход</h1>
 
         <form className={`${styles.form} mb-20`} onSubmit={formSubmit}>
           <Input
@@ -69,15 +73,29 @@ export const Login = () => {
             Войти
           </Button>
         </form>
-       { hasError && <span className={styles.error}>{hasError}</span> }
-       <div className={styles.links}>
-           <span className="text text_type_main-default text_color_inactive">Вы - новый пользователь?</span>
-           <Link to="/register" className={`${styles.link} text text_type_main-default ml-2`}>Зарегистрироваться</Link>
-       </div>
-       <div className="links">
-           <span className="text text_type_main-default text_color_inactive">Забыли пароль?</span>
-           <Link to="/forgot-password" className={`${styles.link} text text_type_main-default ml-2`}>Восстановить пароль</Link>
-       </div>
+        {hasError && <span className={styles.error}>{hasError}</span>}
+        <div className={styles.links}>
+          <span className="text text_type_main-default text_color_inactive">
+            Вы - новый пользователь?
+          </span>
+          <Link
+            to="/register"
+            className={`${styles.link} text text_type_main-default ml-2`}
+          >
+            Зарегистрироваться
+          </Link>
+        </div>
+        <div className="links">
+          <span className="text text_type_main-default text_color_inactive">
+            Забыли пароль?
+          </span>
+          <Link
+            to="/forgot-password"
+            className={`${styles.link} text text_type_main-default ml-2`}
+          >
+            Восстановить пароль
+          </Link>
+        </div>
       </div>
     </>
   );

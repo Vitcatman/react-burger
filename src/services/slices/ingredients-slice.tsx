@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
 import { baseUrl } from "../../utils/data";
-import { checkResponse} from "../../utils/check-response";
+import { checkResponse } from "../../utils/check-response";
 
 const initialState = {
   ingredients: [],
@@ -153,4 +153,3 @@ export const {
   removeIngredient,
   closeOrderModal,
 } = ingredientsSlice.actions;
-

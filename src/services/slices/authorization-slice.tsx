@@ -28,8 +28,7 @@ const authorizationSlice = createSlice({
       state.forgotPasswordSuccess = false;
     },
     resetError: (state) => {
-      state.hasError = ""
-      ;
+      state.hasError = "";
     },
     resetUpdateSuccess: (state) => {
       state.updateSuccess = false;
@@ -170,7 +169,7 @@ const authorizationSlice = createSlice({
       .addCase(updateUserData.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.hasError = "";
-        state.updateSuccess = true
+        state.updateSuccess = true;
         state.user.name = payload.user.name;
         state.user.email = payload.user.email;
         state.user.password = payload.user.password;
@@ -214,7 +213,6 @@ export const loginRequest = createAsyncThunk(
       });
       const newData = await checkResponse(res);
       return newData;
-      
     } catch (err) {
       // @ts-ignore
       return rejectWithValue(err.message);
@@ -350,5 +348,9 @@ export const updateUserData = createAsyncThunk(
 
 export const authorizationSelector = (state) => state.authorization;
 export const authorizationReducer = authorizationSlice.reducer;
-export const { resetResetPassSuccess, resetForgotPassSuccess, resetUpdateSuccess, resetError } =
-  authorizationSlice.actions;
+export const {
+  resetResetPassSuccess,
+  resetForgotPassSuccess,
+  resetUpdateSuccess,
+  resetError,
+} = authorizationSlice.actions;

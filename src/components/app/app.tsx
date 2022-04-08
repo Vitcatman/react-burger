@@ -1,14 +1,8 @@
-import { Switch, Route, useHistory, useLocation  } from "react-router-dom";
+import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  HomePage,
-  Login,
-  NotFound404,
-  Register,
-  ForgotPassword,
-  ResetPassword,
-  Profile,
+  HomePage, Login, NotFound404, IngredientPage, Register, ForgotPassword, ResetPassword, Profile,
 } from "../../pages/index";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { getCookie } from "../../utils/cookies";
@@ -19,24 +13,18 @@ import {
   getUserData,
   authorizationSelector,
 } from "../../services/slices/authorization-slice";
-import { fetchIngredients, hideIngredientModal } from "../../services/slices/ingredients-slice";
+import { fetchIngredients } from "../../services/slices/ingredients-slice";
 
 function App() {
   const dispatch = useDispatch();
   const { isAuthorized } = useSelector(authorizationSelector);
-  const history = useHistory()
-  const location = useLocation()
-  const background = location.state && location.state.background
-  console.log(background)
+  const history = useHistory();
+  const location = useLocation();
+  const background = location.state && location.state.background;
 
   const closeModal = () => {
-    history.goBack()
-  }
-
-  // const closeModal = () => {
-  //   //@ts-ignore
-  //   dispatch(hideIngredientModal())
-  // }
+    history.goBack();
+  };
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -73,24 +61,22 @@ function App() {
         <ProtectedRoute path="/profile/orders" exact={true}>
           <Profile />
         </ProtectedRoute>
-        <Route>
-          <NotFound404 />
+        <Route path="/ingredients/:id" exact={true}>
+          <IngredientPage />
         </Route>
-        <Route path="/ingredients/:id">
+        <Route>
           <NotFound404 />
         </Route>
       </Switch>
 
-      {background &&
-        <Route path='/ingredients/:id' exact>
-    
+      {background && (
+        <Route path="/ingredients/:id" exact={true}>
           <Modal close={closeModal}>
             <IngredientDetails />
           </Modal>
         </Route>
-      }
+      )}
     </>
   );
 }
-
 export default App;
