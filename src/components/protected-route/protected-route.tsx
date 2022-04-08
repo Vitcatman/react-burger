@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { authorizationSelector } from "../../services/slices/authorization-slice";
 
 export const ProtectedRoute = ({ children, ...rest }) => {
-  const authorize = useSelector(authorizationSelector);
-  console.log(authorize)
+  const {isAuthorized} = useSelector(authorizationSelector);
 
   return (
     <Route
       {...rest}
       render={() =>
-        authorize ? (
+        isAuthorized ? (
           children
         ) : (
           <Redirect to={{ pathname: "/login"}} />

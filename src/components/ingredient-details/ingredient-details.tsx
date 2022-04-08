@@ -1,6 +1,7 @@
 import styles from "./ingredient-details.module.css";
 import PropTypes from "prop-types";
 import ingredients from "../../utils/proptypes";
+import { useParams } from "react-router-dom";
 
 const IngredientDetails = (props) => {
   return (

@@ -1,3 +1,8 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .title {
   text-align: center;
 }
@@ -31,12 +36,16 @@
 
 .link {
   height: 64px;
-  color: #4c4cff;
+  color: #8585AD;
   cursor: pointer;
   transition: opacity 1s ease;
   text-decoration: none;
   margin: 0;
   justify-self: center;
+}
+
+.link_active {
+  color: #F2F2F3
 }
 
 .link:hover {
@@ -45,6 +54,12 @@
 
 .error {
   color: #990000;
+  align-self: center;
+}
+
+.success {
+  color: #4c4cff;
+  align-self: center;
 }
 
 .navbar {
@@ -53,8 +68,3 @@
   align-items: flex-start;
   max-width: 320px;
 }
-
-/* .menu {
-    width: 25%;
-} */
-

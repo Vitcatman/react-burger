@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, Link, useLocation } from "react-router-dom";
+import { useHistory, Link, useLocation, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AppHeader from "../../components/app-header/app-header";
 import styles from "./register.module.css";
@@ -8,7 +8,7 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {registerUser} from '../../services/slices/authorization-slice'
+import {registerUser, authorizationSelector} from '../../services/slices/authorization-slice'
 
 export const Register = () => {
   const [formValue, setFormValue] = useState({
@@ -18,6 +18,7 @@ export const Register = () => {
   });
 
   const dispatch = useDispatch();
+  const {isAuthorized} = useSelector(authorizationSelector);
 
   const formChange = (e) => {
     setFormValue({
@@ -34,6 +35,7 @@ export const Register = () => {
 
   return (
     <>
+    {isAuthorized && (<Redirect to={{pathname: "/"}} />) }
       <AppHeader />
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium`}>

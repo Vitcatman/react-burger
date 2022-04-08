@@ -9,7 +9,7 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {loginRequest, authorizationSelector } from '../../services/slices/authorization-slice'
+import {loginRequest, authorizationSelector, resetResetPassSuccess, resetForgotPassSuccess, resetError } from '../../services/slices/authorization-slice'
 
 export const Login = () => {
   const [formValue, setFormValue] = useState({
@@ -24,7 +24,7 @@ export const Login = () => {
     });
   };
 
-  const authorization = useSelector(authorizationSelector);
+  const {isAuthorized, hasError} = useSelector(authorizationSelector);
 
   const dispatch = useDispatch()
 
@@ -34,16 +34,15 @@ export const Login = () => {
     dispatch(loginRequest(formValue))
    }
 
-   console.log(authorization)
-
-  //  if (authorization) {
-  //   return (
-  //     <Redirect to={'/profile' } />
-  //   )
-  // }
+   useEffect(() => {
+    dispatch(resetError())
+    dispatch(resetForgotPassSuccess())
+    dispatch(resetResetPassSuccess())
+  }, []) 
 
   return (
     <>
+    {isAuthorized && (<Redirect to={{ pathname: "/"}}/>)}
       <AppHeader />
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium`}>
@@ -70,7 +69,7 @@ export const Login = () => {
             Войти
           </Button>
         </form>
-       {/* { error && <span className={styles.error}>{error}</span> } */}
+       { hasError && <span className={styles.error}>{hasError}</span> }
        <div className={styles.links}>
            <span className="text text_type_main-default text_color_inactive">Вы - новый пользователь?</span>
            <Link to="/register" className={`${styles.link} text text_type_main-default ml-2`}>Зарегистрироваться</Link>

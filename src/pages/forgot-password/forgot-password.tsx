@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, Link, useLocation } from "react-router-dom";
+import { useHistory, Link, useLocation, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 import style from "./register.module.css";
 import AppHeader from "../../components/app-header/app-header";
 import styles from "./forgot-password.module.css";
@@ -8,11 +9,15 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import {forgotPassword, authorizationSelector} from '../../services/slices/authorization-slice';
 
 export const ForgotPassword = () => {
   const [formValue, setFormValue] = useState({
     email: "",
   });
+
+  const {forgotPasswordSuccess} = useSelector(authorizationSelector);
+  const dispatch = useDispatch();
 
   const formChange = (e) => {
     setFormValue({
@@ -21,15 +26,22 @@ export const ForgotPassword = () => {
     });
   };
 
+  const formSubmit = (e) => {
+    e.preventDefault()
+    // @ts-ignore
+    dispatch(forgotPassword(formValue))
+   }
+
   return (
     <>
+    {forgotPasswordSuccess && (<Redirect to={{pathname: "/reset-password"}} />) }
       <AppHeader />
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium`}>
           Восстановление пароля
         </h1>
 
-        <form className={`${styles.form} mb-20`}>
+        <form className={`${styles.form} mb-20`} onSubmit={formSubmit}>
           
           <Input
             type={"email"}

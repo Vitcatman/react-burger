@@ -28,4 +28,9 @@
   text-decoration: none;
   align-items: center;
   color: inherit;
+  color: #8585AD;
+}
+
+.link_active {
+  color: #F2F2F3
 }
