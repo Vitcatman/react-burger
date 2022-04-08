@@ -1,108 +1,135 @@
-import { useState, useContext } from "react";
+import { useMemo } from "react";
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
-  DragIcon,
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { IngredientsContext } from "../../services/ingredients-context";
-import { OrderContext } from "../../services/order-context";
+import {
+  ingredientsSelector,
+  addIngredient,
+  fetchOrder,
+  closeOrderModal,
+  removeIngredient,
+} from "../../services/slices/ingredients-slice";
+import { useDispatch, useSelector } from "react-redux";
+import ConstructorItem from "../constructor-item/constructor-item";
+import { useDrop } from "react-dnd";
 
 const BurgerConstructor = () => {
-  const { state } = useContext(IngredientsContext);
-  const ingr = state.ingredients.filter((item) => item.type !== "bun");
-  const bun = state.ingredients.find((item) => item.type === "bun");
-  const finalPrice = ingr.reduce(
-    (total, curValue) => total + curValue.price,
-    bun.price * 2
+  const dispatch = useDispatch();
+  const { ingredientsConstructor, cartModalState } =
+    useSelector(ingredientsSelector);
+
+  const ingr = useMemo(
+    () => ingredientsConstructor.filter((item) => item.type !== "bun"),
+    [ingredientsConstructor]
   );
 
-  const [active, setActive] = useState(false);
-  const [orderNumber, setOrderNumber] = useState(0);
-  const toggleModal = () => setActive(!active);
+  const bun = useMemo(
+    () => ingredientsConstructor.find((item) => item.type === "bun"),
+    [ingredientsConstructor]
+  );
 
-  const placeOrder = async () => {
-    try {
-      const res = await fetch("https://norma.nomoreparties.space/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ingredients: state.ingredients.map((el) => el._id),
-        }),
-      });
-      if (!res.ok) {
-        throw new Error("Ошибка отправки");
+  const finalPrice = useMemo(() => {
+    if (bun && ingredientsConstructor.length >= 1)
+      return ingr.reduce(
+        (total, curValue) => total + curValue.price,
+        bun.price * 2
+      );
+  }, [ingredientsConstructor]);
+
+  const [{ isOver }, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop: (item: { type: string; _id: string }) => {
+      if (item.type === "bun") {
+        dispatch(removeIngredient(item));
+        dispatch(addIngredient(item));
+      } else {
+        dispatch(addIngredient(item));
       }
-      const newOrder = await res.json();
-      setOrderNumber(newOrder.order.number);
-      toggleModal();
-    } catch (error) {
-      setOrderNumber(0);
-      console.log(error);
-    }
-  };
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
 
   return (
-    <section className={`${styles.container} mt-25`}>
-      {active && (
-        <Modal close={toggleModal}>
-          <OrderContext.Provider value={orderNumber}>
-            <OrderDetails />
-          </OrderContext.Provider>
+    <section
+      ref={dropTarget}
+      className={`${styles.container} mt-25`}
+      style={{ outline: isOver ? "2px solid #4C4CFF" : "none" }}
+    >
+      {ingredientsConstructor.length === 0 && (
+        <span className="text text_type_main-medium">
+          Перетащите сюда ингредиенты
+        </span>
+      )}
+
+      {cartModalState && (
+        <Modal
+          close={() => {
+            // @ts-ignore
+            dispatch(closeOrderModal());
+          }}
+        >
+          <OrderDetails />
         </Modal>
       )}
-      <div className={`ml-7 pl-5`}>
-        <ConstructorElement
-          type="top"
-          isLocked={true}
-          text={`${bun.name} (верх)`}
-          price={bun.price}
-          thumbnail={bun.image}
-        />
-      </div>
-      <ul className={`${styles.cart} custom-scroll`}>
-        {ingr.map((el) => {
-          if (el.type !== "bun") {
-            return (
-              <li className={`${styles.listitem} mb-4 ml-4`} key={el._id}>
-                <div className={"mr-2"}>
-                  <DragIcon type="primary" />
-                </div>
-                <ConstructorElement
-                  text={el.name}
-                  price={el.price}
-                  thumbnail={el.image}
-                />
-              </li>
-            );
-          } else {
-            return null;
-          }
-        })}
-      </ul>
-      <div className={`ml-7 pl-5`}>
-        <ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={`${bun.name} (низ)`}
-          price={bun.price}
-          thumbnail={bun.image}
-        />
-      </div>
-      <div className={`${styles.total} mr-4 mt-10`}>
-        <div className={`mr-10`}>
-          <span className={"text text_type_digits-medium mr-2"}>
-            {finalPrice}
-          </span>
-          <CurrencyIcon type="primary" />
+
+      {bun && (
+        <div className={`ml-7 pl-5`}>
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={bun.name + " (верх)"}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
         </div>
-        <Button type="primary" size="medium" onClick={placeOrder}>
-          Оформить заказ
-        </Button>
-      </div>
+      )}
+
+      <ul className={`${styles.cart} custom-scroll`}>
+        {ingr.length !== 0 &&
+          ingr.map((item, index) => (
+            // @ts-ignore
+            <ConstructorItem item={item} index={index} key={item.id} />
+          ))}
+      </ul>
+
+      {bun && (
+        <div className={`ml-7 pl-5`}>
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={bun.name + " (низ)"}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
+        </div>
+      )}
+
+      {ingredientsConstructor.length >= 1 && (
+        <div className={`${styles.total} mr-4 mt-10`}>
+          <div className={`mr-10`}>
+            <span className={"text text_type_digits-medium mr-2"}>
+              {finalPrice}
+            </span>
+            <CurrencyIcon type="primary" />
+          </div>
+          {/* @ts-ignore */}
+          <Button
+            type="primary"
+            size="medium"
+            // @ts-ignore
+            onClick={() => dispatch(fetchOrder(ingredientsConstructor))}
+          >
+            Оформить заказ
+          </Button>
+        </div>
+      )}
     </section>
   );
 };

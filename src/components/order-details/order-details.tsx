@@ -1,10 +1,9 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { OrderContext } from "../../services/order-context";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
+import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 
 const OrderDetails = () => {
-  const orderNumber = useContext(OrderContext);
-
+  const { orderNumber } = useSelector(ingredientsSelector);
   return (
     <>
       <div className={`mt-20 text text_type_digits-large`}>{orderNumber}</div>
