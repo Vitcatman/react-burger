@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory, useLocation  } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,16 +12,31 @@ import {
 } from "../../pages/index";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { getCookie } from "../../utils/cookies";
+import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 import {
   updateToken,
   getUserData,
   authorizationSelector,
 } from "../../services/slices/authorization-slice";
-import { fetchIngredients } from "../../services/slices/ingredients-slice";
+import { fetchIngredients, hideIngredientModal } from "../../services/slices/ingredients-slice";
 
 function App() {
   const dispatch = useDispatch();
   const { isAuthorized } = useSelector(authorizationSelector);
+  const history = useHistory()
+  const location = useLocation()
+  const background = location.state && location.state.background
+  console.log(background)
+
+  const closeModal = () => {
+    history.goBack()
+  }
+
+  // const closeModal = () => {
+  //   //@ts-ignore
+  //   dispatch(hideIngredientModal())
+  // }
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -35,8 +50,8 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Switch>
+    <>
+      <Switch location={background || location}>
         <Route path="/" exact={true}>
           <HomePage />
         </Route>
@@ -65,7 +80,16 @@ function App() {
           <NotFound404 />
         </Route>
       </Switch>
-    </Router>
+
+      {background &&
+        <Route path='/ingredients/:id' exact>
+    
+          <Modal close={closeModal}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
+      }
+    </>
   );
 }
 

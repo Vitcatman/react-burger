@@ -14,12 +14,12 @@ const IngredientList = (props) => {
 
   return (
     <section>
-      {ingredientModalState && (
+      {/* {ingredientModalState && (
        // @ts-ignore
         <Modal close={() => {dispatch(hideIngredientModal())}}>
           <IngredientDetails {...ingredientDetails} />
         </Modal>
-      )}
+      )} */}
       <h2 className="text text_type_main-medium mb-5 mt-10" ref={props.tabRef}>
         {props.name}{" "}
       </h2>

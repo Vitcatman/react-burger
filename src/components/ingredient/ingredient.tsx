@@ -6,6 +6,7 @@ import styles from "./ingredient.module.css";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import { ingredientsSelector } from "../../services/slices/ingredients-slice";
+import { Link, useLocation } from 'react-router-dom'
 import PropTypes from "prop-types";
 import ingredients from "../../utils/proptypes";
 
@@ -14,6 +15,7 @@ const Ingredient = (item) => {
     type: "ingredient",
     item,
   });
+  const location = useLocation()
 
   const { ingredientsConstructor } = useSelector(ingredientsSelector);
 
@@ -22,6 +24,7 @@ const Ingredient = (item) => {
   ).length;
 
   return (
+    <Link ref={dragRef} to={{ pathname: `/ingredients/${item._id}`, state: { background: location } }}>
     <div className={`${styles.ingredient} mb-8`} ref={dragRef}>
       <img className={" mr-4 ml-4"} src={item.image} alt={item.name} />
       <div className={`${styles.price} mt-1 mb-1`}>
@@ -33,6 +36,7 @@ const Ingredient = (item) => {
       </h3>
       <Counter count={counter} size="default" />
     </div>
+    </Link>
   );
 };
 
