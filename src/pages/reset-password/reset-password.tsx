@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, Link, useLocation, Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import style from "./register.module.css";
 import AppHeader from "../../components/app-header/app-header";
 import styles from "./reset-password.module.css";
 import {
@@ -20,7 +19,9 @@ export const ResetPassword = () => {
     token: "",
   });
 
-  const { resetPasswordSuccess, hasError } = useSelector(authorizationSelector);
+  const { resetPasswordSuccess, hasError, isAuthorized } = useSelector(
+    authorizationSelector
+  );
   const dispatch = useDispatch();
 
   const formChange = (e) => {
@@ -37,6 +38,7 @@ export const ResetPassword = () => {
   };
   return (
     <>
+      {isAuthorized && <Redirect to={{ pathname: "/" }} />}
       {resetPasswordSuccess && <Redirect to={{ pathname: "/login" }} />}
       <AppHeader />
       <div className={styles.main}>

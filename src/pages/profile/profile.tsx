@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink} from "react-router-dom";
 import AppHeader from "../../components/app-header/app-header";
 import styles from "./profile.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +23,7 @@ export const Profile = () => {
   });
 
   const [buttons, setButtons] = useState(false);
-  const { user, hasError, updateSuccess } = useSelector(authorizationSelector);
+  const { user, hasError, updateSuccess, isAuthorized } = useSelector(authorizationSelector);
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -81,7 +81,7 @@ export const Profile = () => {
             </NavLink>
 
             <NavLink
-              to={"/login"}
+               to= {isAuthorized ? "/profile" : "/login"}
               className={styles.link}
               onClick={loggingOut}
               activeClassName={styles.link_active}

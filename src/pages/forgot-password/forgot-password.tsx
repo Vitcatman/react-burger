@@ -16,7 +16,7 @@ export const ForgotPassword = () => {
     email: "",
   });
 
-  const { forgotPasswordSuccess } = useSelector(authorizationSelector);
+  const { forgotPasswordSuccess, isAuthorized } = useSelector(authorizationSelector);
   const dispatch = useDispatch();
 
   const formChange = (e) => {
@@ -34,6 +34,7 @@ export const ForgotPassword = () => {
 
   return (
     <>
+    {isAuthorized && <Redirect to={{ pathname: "/" }} />}
       {forgotPasswordSuccess && (
         <Redirect to={{ pathname: "/reset-password" }} />
       )}
