@@ -2,15 +2,22 @@ import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  HomePage, Login, NotFound404, IngredientPage, Register, ForgotPassword, ResetPassword, Profile,
+  HomePage,
+  Login,
+  NotFound404,
+  IngredientPage,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
 } from "../../pages/index";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { getCookie } from "../../utils/cookies";
 import Modal from "../modal/modal";
+import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import {
   updateToken,
-  getUserData,
   authorizationSelector,
 } from "../../services/slices/authorization-slice";
 import { fetchIngredients } from "../../services/slices/ingredients-slice";
@@ -21,7 +28,6 @@ function App() {
   const history = useHistory();
   const location = useLocation();
   const background = location.state && location.state.background;
-  console.log(isAuthorized)
 
   const closeModal = () => {
     history.goBack();
@@ -29,17 +35,14 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    if (getCookie("refreshToken")) {
-      dispatch(getUserData());
-      if (!isAuthorized) {
-        dispatch(updateToken())
-        dispatch(getUserData())
-      }
+    if (getCookie("refreshToken") && !isAuthorized) {
+      dispatch(updateToken());
     }
   }, []);
 
   return (
     <>
+      <AppHeader />
       <Switch location={background || location}>
         <Route path="/" exact={true}>
           <HomePage />

@@ -8,7 +8,6 @@ import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 
 export const IngredientPage = () => {
   const { id } = useParams();
-  console.log(id);
   const { ingredients } = useSelector(ingredientsSelector);
   const currentIngredient = useMemo(
     () => ingredients.find((el) => el._id === id),
@@ -19,7 +18,6 @@ export const IngredientPage = () => {
     <>
       {currentIngredient && (
         <>
-          <AppHeader />
           <div className={styles.wrapper}>
             <IngredientDetails />
           </div>

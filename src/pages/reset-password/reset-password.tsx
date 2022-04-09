@@ -40,7 +40,6 @@ export const ResetPassword = () => {
     <>
       {isAuthorized && <Redirect to={{ pathname: "/" }} />}
       {resetPasswordSuccess && <Redirect to={{ pathname: "/login" }} />}
-      <AppHeader />
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium}`}>
           Восстановление пароля

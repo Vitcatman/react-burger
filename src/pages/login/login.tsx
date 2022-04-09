@@ -1,8 +1,7 @@
 import {useEffect, useState} from "react";
 import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Link} from "react-router-dom";
-import AppHeader from "../../components/app-header/app-header";
+import { Link, useLocation} from "react-router-dom";
 import styles from "./login.module.css";
 import {
   Input,
@@ -14,6 +13,7 @@ import {
   authorizationSelector,
   resetResetPassSuccess,
   resetForgotPassSuccess,
+  resetUpdateSuccess,
   resetError,
 } from "../../services/slices/authorization-slice";
 
@@ -32,7 +32,8 @@ export const Login = () => {
 
   const { isAuthorized, hasError } = useSelector(authorizationSelector);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
+  const location = useLocation();
 
   const formSubmit = (e) => {
     e.preventDefault();
@@ -44,12 +45,13 @@ export const Login = () => {
     dispatch(resetError());
     dispatch(resetForgotPassSuccess());
     dispatch(resetResetPassSuccess());
+    dispatch(resetUpdateSuccess());
   }, []);
 
   return (
     <>
-      {isAuthorized && <Redirect to={{ pathname: "/" }} />}
-      <AppHeader />
+    
+      {isAuthorized && <Redirect to={ location.state.from || "/" } />}
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium`}>Вход</h1>
 

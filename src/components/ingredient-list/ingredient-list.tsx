@@ -1,15 +1,12 @@
-import { useState, useContext } from "react";
 import Ingredient from "../ingredient/ingredient";
 import styles from "./ingredient-list.module.css";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
-import { ingredientsSelector, showIngredientModal, hideIngredientModal} from '../../services/slices/ingredients-slice';
+import { ingredientsSelector, showIngredientModal} from '../../services/slices/ingredients-slice';
 import { useDispatch, useSelector } from 'react-redux'
 
 const IngredientList = (props) => {
   const dispatch = useDispatch();
-  const { ingredients, ingredientModalState, ingredientDetails } = useSelector(ingredientsSelector)
+  const { ingredients} = useSelector(ingredientsSelector)
 
 
   return (

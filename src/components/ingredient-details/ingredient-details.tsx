@@ -1,5 +1,4 @@
 import styles from "./ingredient-details.module.css";
-import ingredients from "../../utils/proptypes";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ingredientsSelector } from "../../services/slices/ingredients-slice";
@@ -9,7 +8,6 @@ const IngredientDetails = () => {
   //@ts-ignore
   const { id } = useParams();
   const currentIngredient = ingredients.find((item) => item._id === id);
-  console.log(currentIngredient)
 
   return (
     <>

@@ -69,7 +69,7 @@ const authorizationSlice = createSlice({
         state.user.password = action.payload.user.password;
         state.isAuthorized = true;
         setCookie("accessToken", action.payload.accessToken, {
-          expires: 1 * 60,
+          expires: 20 * 60,
         });
         // @ts-ignore
         setCookie("refreshToken", action.payload.refreshToken);
@@ -133,7 +133,7 @@ const authorizationSlice = createSlice({
         state.isLoading = false;
         state.hasError = "";
         setCookie("accessToken", action.payload.accessToken, {
-          expires: 1 * 60,
+          expires: 20 * 60,
         });
         // @ts-ignore
         setCookie("refreshToken", action.payload.refreshToken);
@@ -285,7 +285,7 @@ export const updateToken = createAsyncThunk(
         body: JSON.stringify({ token: getCookie("refreshToken") }),
       });
       const newData = await checkResponse(res);
-      return newData;
+      return newData
     } catch (err) {
       // @ts-ignore
       return rejectWithValue(err.message);
@@ -309,8 +309,7 @@ export const getUserData = createAsyncThunk(
         const newData = await checkResponse(res);
         return newData;
       } else {
-        updateToken();
-        await getUserData();
+         updateToken()
       }
     } catch (err) {
       // @ts-ignore

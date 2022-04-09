@@ -38,7 +38,6 @@ export const ForgotPassword = () => {
       {forgotPasswordSuccess && (
         <Redirect to={{ pathname: "/reset-password" }} />
       )}
-      <AppHeader />
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium`}>
           Восстановление пароля

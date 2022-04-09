@@ -39,7 +39,6 @@ export const Register = () => {
   return (
     <>
       {isAuthorized && <Redirect to={{ pathname: "/" }} />}
-      <AppHeader />
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium`}>Регистрация</h1>
 

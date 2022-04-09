@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, NavLink} from "react-router-dom";
+import { useLocation, NavLink } from "react-router-dom";
 import AppHeader from "../../components/app-header/app-header";
 import styles from "./profile.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,13 +7,14 @@ import {
   logOut,
   authorizationSelector,
   updateUserData,
-  resetUpdateSuccess,
-  resetError,
+  updateToken,
+  getUserData,
 } from "../../services/slices/authorization-slice";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { getCookie } from "../../utils/cookies";
 
 export const Profile = () => {
   const [formValue, setFormValue] = useState({
@@ -23,7 +24,9 @@ export const Profile = () => {
   });
 
   const [buttons, setButtons] = useState(false);
-  const { user, hasError, updateSuccess, isAuthorized } = useSelector(authorizationSelector);
+  const { user, hasError, updateSuccess, isAuthorized } = useSelector(
+    authorizationSelector
+  );
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -40,14 +43,18 @@ export const Profile = () => {
   };
 
   useEffect(() => {
-    dispatch(resetError());
-    dispatch(resetUpdateSuccess());
+    if (getCookie("refreshToken") && getCookie("accessToken") == null) {
+      dispatch(updateToken());
+    }
+    if (getCookie("accessToken") != null) {
+      dispatch(getUserData());
+    }
     setFormValue({
       name: user.name,
       email: user.email,
       password: "",
     });
-  }, []);
+  }, [user]);
 
   const formSubmit = (e) => {
     e.preventDefault();
@@ -57,7 +64,6 @@ export const Profile = () => {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.main}>
         <section className={styles.menu}>
           <nav className={styles.navbar}>
@@ -81,7 +87,7 @@ export const Profile = () => {
             </NavLink>
 
             <NavLink
-               to= {isAuthorized ? "/profile" : "/login"}
+              to={isAuthorized ? "/profile" : "/login"}
               className={styles.link}
               onClick={loggingOut}
               activeClassName={styles.link_active}

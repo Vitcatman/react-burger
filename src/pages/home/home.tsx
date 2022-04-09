@@ -12,7 +12,6 @@ export const HomePage = () => {
 
   return (
     <>
-      <AppHeader />
       {!isLoading && !hasError && (
         <main className={style.main}>
           <DndProvider backend={HTML5Backend}>
