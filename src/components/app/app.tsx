@@ -21,6 +21,7 @@ function App() {
   const history = useHistory();
   const location = useLocation();
   const background = location.state && location.state.background;
+  console.log(isAuthorized)
 
   const closeModal = () => {
     history.goBack();
@@ -31,8 +32,8 @@ function App() {
     if (getCookie("refreshToken")) {
       dispatch(getUserData());
       if (!isAuthorized) {
-        dispatch(updateToken());
-        dispatch(getUserData());
+        dispatch(updateToken())
+        dispatch(getUserData())
       }
     }
   }, []);
