@@ -12,7 +12,7 @@ import {
   Profile,
 } from "../../pages/index";
 import { ProtectedRoute } from "../protected-route/protected-route";
-import { getCookie } from "../../utils/cookies";
+import { getCookie, setCookie } from "../../utils/cookies";
 import Modal from "../modal/modal";
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";

@@ -51,7 +51,7 @@ export const Login = () => {
   return (
     <>
     
-      {isAuthorized && <Redirect to={ location.state.from || "/" } />}
+      {isAuthorized && <Redirect to={ location?.state?.from || "/" } />}
       <div className={styles.main}>
         <h1 className={`${styles.title} text_type_main-medium`}>Вход</h1>
 

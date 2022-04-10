@@ -47,14 +47,16 @@ export const Profile = () => {
       dispatch(updateToken());
     }
     if (getCookie("accessToken") != null) {
-      dispatch(getUserData());
+      dispatch(getUserData())
+      setFormValue({
+        name: user.name,
+        email: user.email,
+        password: "",
+      });
     }
-    setFormValue({
-      name: user.name,
-      email: user.email,
-      password: "",
-    });
+
   }, [user]);
+
 
   const formSubmit = (e) => {
     e.preventDefault();
