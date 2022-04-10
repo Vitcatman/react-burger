@@ -51,7 +51,7 @@ const authorizationSlice = createSlice({
           expires: 20 * 60,
         });
         // @ts-ignore
-        setCookie("refreshToken", action.payload.refreshToken);
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -72,7 +72,7 @@ const authorizationSlice = createSlice({
           expires: 20 * 60,
         });
         // @ts-ignore
-        setCookie("refreshToken", action.payload.refreshToken);
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(loginRequest.rejected, (state, action) => {
         state.isLoading = false;
@@ -118,7 +118,7 @@ const authorizationSlice = createSlice({
         state.user.name = "";
         state.user.password = "";
         deleteCookie("accessToken");
-        deleteCookie("refreshToken");
+        localStorage.removeItem('refreshToken');
       })
       .addCase(logOut.rejected, (state, action) => {
         state.isLoading = false;
@@ -136,7 +136,7 @@ const authorizationSlice = createSlice({
           expires: 20 * 60,
         });
         // @ts-ignore
-        setCookie("refreshToken", action.payload.refreshToken);
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
         state.isAuthorized = true;
       })
       .addCase(updateToken.rejected, (state, action) => {
@@ -262,7 +262,7 @@ export const logOut = createAsyncThunk(
       const res = await fetch(`${baseUrl}/auth/logout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: getCookie("refreshToken") }),
+        body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
       });
       const newData = await checkResponse(res);
       return newData;
@@ -282,7 +282,7 @@ export const updateToken = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token: getCookie("refreshToken") }),
+        body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
       });
       const newData = await checkResponse(res);
       return newData

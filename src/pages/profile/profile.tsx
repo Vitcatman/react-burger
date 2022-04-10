@@ -43,7 +43,7 @@ export const Profile = () => {
   };
 
   useEffect(() => {
-    if (getCookie("refreshToken") && getCookie("accessToken") == null) {
+    if (localStorage.getItem('refreshToken') && getCookie("accessToken") == null) {
       dispatch(updateToken());
     }
     if (getCookie("accessToken") != null) {

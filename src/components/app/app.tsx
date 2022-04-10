@@ -35,7 +35,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    if (getCookie("refreshToken") && !isAuthorized) {
+    if (localStorage.getItem('refreshToken') && !isAuthorized) {
       dispatch(updateToken());
     }
   }, []);
