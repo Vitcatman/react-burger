@@ -12,12 +12,12 @@ import {
   Profile,
 } from "../../pages/index";
 import { ProtectedRoute } from "../protected-route/protected-route";
-import { getCookie, setCookie } from "../../utils/cookies";
 import Modal from "../modal/modal";
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import {
   updateToken,
+  getUserData,
   authorizationSelector,
 } from "../../services/slices/authorization-slice";
 import { fetchIngredients } from "../../services/slices/ingredients-slice";
@@ -35,7 +35,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    if (localStorage.getItem('refreshToken') && !isAuthorized && !background) {
+    if (localStorage.getItem("refreshToken") && !isAuthorized && !background) {
       dispatch(updateToken());
     }
   }, []);

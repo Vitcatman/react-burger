@@ -308,9 +308,7 @@ export const getUserData = createAsyncThunk(
         });
         const newData = await checkResponse(res);
         return newData;
-      } else {
-         updateToken()
-      }
+      } 
     } catch (err) {
       // @ts-ignore
       return rejectWithValue(err.message);
@@ -333,10 +331,7 @@ export const updateUserData = createAsyncThunk(
         });
         const newData = await checkResponse(res);
         return newData;
-      } else {
-        updateToken();
-        getUserData();
-      }
+      } 
     } catch (err) {
       // @ts-ignore
       return rejectWithValue(err.message);

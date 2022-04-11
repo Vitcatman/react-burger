@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation, NavLink } from "react-router-dom";
-import AppHeader from "../../components/app-header/app-header";
 import styles from "./profile.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,7 +28,7 @@ export const Profile = () => {
   );
   const location = useLocation();
   const dispatch = useDispatch();
-
+  
   const loggingOut = () => {
     dispatch(logOut());
   };
@@ -44,16 +43,17 @@ export const Profile = () => {
 
   useEffect(() => {
     if (localStorage.getItem('refreshToken') && getCookie("accessToken") == null) {
-      dispatch(updateToken());
+      // @ts-ignore
+      dispatch(updateToken()).then(() => dispatch(getUserData()));
     }
-    if (getCookie("accessToken") != null) {
+    if (getCookie("accessToken")) {
       dispatch(getUserData())
-      setFormValue({
-        name: user.name,
-        email: user.email,
-        password: "",
-      });
     }
+    setFormValue({
+      name: user.name,
+      email: user.email,
+      password: "",
+    });
 
   }, [user]);
 
