@@ -35,7 +35,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    if (localStorage.getItem('refreshToken') && !isAuthorized) {
+    if (localStorage.getItem('refreshToken') && !isAuthorized && !background) {
       dispatch(updateToken());
     }
   }, []);
