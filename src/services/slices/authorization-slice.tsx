@@ -297,7 +297,6 @@ export const getUserData = createAsyncThunk(
   "authorization/getUserData",
   async (data, { rejectWithValue }) => {
     try {
-      if (getCookie("accessToken")) {
         const res = await fetch(`${baseUrl}/auth/user`, {
           method: "GET",
           headers: {
@@ -308,7 +307,6 @@ export const getUserData = createAsyncThunk(
         });
         const newData = await checkResponse(res);
         return newData;
-      } 
     } catch (err) {
       // @ts-ignore
       return rejectWithValue(err.message);
@@ -320,7 +318,7 @@ export const updateUserData = createAsyncThunk(
   "authorization/updateUserData",
   async (data, { rejectWithValue }) => {
     try {
-      if (getCookie("accessToken")) {
+     
         const res = await fetch(`${baseUrl}/auth/user`, {
           method: "PATCH",
           headers: {
@@ -330,8 +328,8 @@ export const updateUserData = createAsyncThunk(
           body: JSON.stringify(data),
         });
         const newData = await checkResponse(res);
-        return newData;
-      } 
+        return newData; 
+
     } catch (err) {
       // @ts-ignore
       return rejectWithValue(err.message);

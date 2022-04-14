@@ -38,6 +38,7 @@ function App() {
     if (localStorage.getItem("refreshToken") && !isAuthorized && !background) {
       dispatch(updateToken());
     }
+    
   }, []);
 
   return (

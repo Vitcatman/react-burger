@@ -60,8 +60,15 @@ export const Profile = () => {
 
   const formSubmit = (e) => {
     e.preventDefault();
-    // @ts-ignore
-    dispatch(updateUserData(formValue));
+    if((getCookie("accessToken"))) {
+      // @ts-ignore
+      dispatch(updateUserData(formValue));
+     } else {
+       // @ts-ignore
+      dispatch(updateToken()).then(() => dispatch(updateUserData(formValue)));
+     }
+    
+   
   };
 
   return (
