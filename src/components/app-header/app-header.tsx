@@ -19,7 +19,7 @@ const AppHeader = () => {
               Конструктор
             </span>
           </NavLink>
-          <NavLink to={'/profile/orders'} exact className={`${style.link} ml-5`} activeClassName={style.link_active}>
+          <NavLink to={'/feed'} exact className={`${style.link} ml-5`} activeClassName={style.link_active}>
             <ListIcon type="secondary" />
             <span className="text text_type_main-default ml-2">
               Лента заказов

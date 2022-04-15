@@ -1,0 +1,14 @@
+.image {
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  object-fit: cover;
+  border: 2px solid transparent;
+  margin-left: -20px;
+  background: linear-gradient(black, black) padding-box,
+    linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%) border-box;
+}
+
+.image:first-child {
+  margin-left: 0;
+}

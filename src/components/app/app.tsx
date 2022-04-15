@@ -10,6 +10,7 @@ import {
   ForgotPassword,
   ResetPassword,
   Profile,
+  OrderFeed
 } from "../../pages/index";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import Modal from "../modal/modal";
@@ -65,6 +66,9 @@ function App() {
         </ProtectedRoute>
         <Route path="/ingredients/:id" exact={true}>
           <IngredientPage />
+        </Route>
+        <Route path="/feed">
+          <OrderFeed />
         </Route>
         <Route>
           <NotFound404 />
