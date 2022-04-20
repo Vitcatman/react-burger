@@ -16,12 +16,13 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  padding: 20px 20px;
 }
 
 .close_button {
   position: absolute;
-  top: 56px;
-  right: 33px;
+  top: 36px;
+  right: 23px;
   background-color: #1c1c21;
   border: none;
   cursor: pointer;
@@ -30,4 +31,8 @@
 
 .close_button:hover {
   opacity: 0.6;
+}
+
+.title {
+  align-items: center;
 }

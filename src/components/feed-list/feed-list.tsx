@@ -1,26 +1,18 @@
 import styles from "./feed-list.module.css";
-import { useSelector } from "react-redux";
-import { ingredientsSelector } from "../../services/slices/ingredients-slice";
-import {FeedItem} from "../feed-item/feed-item"
+import { FeedItem } from "../feed-item/feed-item";
+import PropTypes from "prop-types";
 
-export const FeedList = () => {
-
+export const FeedList = ({ feed }) => {
   return (
-    
-      
-        <section className={`${styles.list} custom-scroll`}>
-        
-             <FeedItem />
-             <FeedItem />
-             <FeedItem />
-             <FeedItem />
-             <FeedItem />
-             <FeedItem />
-             <FeedItem />
-            
-          
-        </section>
-     
-    
+    <ul className={`${styles.list} custom-scroll`}>
+      {feed.map((order) => (
+        <li key={order._id}>
+          <FeedItem data={order} />
+        </li>
+      ))}
+    </ul>
   );
+};
+FeedList.propTypes = {
+  feed: PropTypes.array.isRequired,
 };

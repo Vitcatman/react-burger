@@ -3,32 +3,83 @@ import { useSelector } from "react-redux";
 import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 import { FeedIngredient } from "../feed-ingredient/feed-ingredient";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { formatDate } from "../../utils/data";
+import { Link, useLocation } from "react-router-dom";
+import { nanoid } from "@reduxjs/toolkit";
+import { checkOrderStatus } from "../../utils/orderStatus";
+import PropTypes from "prop-types";
 
-export const FeedItem = () => {
+export const FeedItem = ({ data }) => {
+  const { ingredients } = useSelector(ingredientsSelector);
+  const location = useLocation();
+  let feedIngredients = [];
+
+  data.ingredients.forEach((item) => {
+    if (item !== null)
+      feedIngredients.push(ingredients.find((el) => el._id === item));
+  });
+
+  const orderPrice = feedIngredients.reduce(
+    (total, curValue) => total + curValue.price,
+    0
+  );
+
   return (
-    <div className={`${styles.wrapper} mt-4 mr-2`}>
+    <Link
+      className={`${styles.wrapper} mt-4 mr-2`}
+      to={{ pathname: `/feed/${data._id}`, state: { background: location } }}
+    >
       <div className={`${styles.info} mt-6 ml-6 mr-6`}>
-        <span className="text_type_digits-default">#034535</span>
+        <span className="text_type_digits-default">#{data.number}</span>
         <time className="text text_color_inactive text_type_main-default">
-          Сегодня, 16:20 i-GMT+3
+          {formatDate(data.createdAt)}
         </time>
       </div>
-      <h2 className={`${styles.title}`}>Death Starship Main бургер</h2>
-      <div className={`${styles.container} mb-6 ml-6 mr-6`}>
-        <div className={`${styles.list}`}>
-          <FeedIngredient />
-          <FeedIngredient />
-          <FeedIngredient />
-        </div>
-        <p className={`${styles.price}`}>
-        <span className="text text_type_digits-default text_color_primary mr-2">
-        510
+      <h2 className={`${styles.title}`}>{data.name}</h2>
+      {location.pathname.startsWith("/profile") && (
+        <span
+          className={`text text_type_main-small ml-6 ${
+            data.status === "done" ? styles.done : "text_color_primary"
+          }`}
+        >
+          {checkOrderStatus(data.status)}
         </span>
-        <CurrencyIcon type="primary" />
+      )}
+      <div className={`${styles.container} mb-6 ml-6 mr-6`}>
+        <ul className={`${styles.list}`}>
+          {feedIngredients.slice(0, 6).map((i, index) => {
+            if (index < 5) {
+              return (
+                <li className={styles.element} key={nanoid()}>
+                  <FeedIngredient data={i} />
+                </li>
+              );
+            } else {
+              return (
+                <li className={styles.element} key={nanoid()}>
+                  <FeedIngredient data={i} />
+                  {feedIngredients.length !== 6 && (
+                    <span
+                      className={`${styles.cover} text_type_digits-default`}
+                    >
+                      +{feedIngredients.length - 6}
+                    </span>
+                  )}
+                </li>
+              );
+            }
+          })}
+        </ul>
+        <p className={`${styles.price}`}>
+          <span className="text text_type_digits-default text_color_primary mr-2">
+            {orderPrice}
+          </span>
+          <CurrencyIcon type="primary" />
         </p>
       </div>
-
-      
-    </div>
+    </Link>
   );
+};
+FeedItem.propTypes = {
+  data: PropTypes.object.isRequired,
 };

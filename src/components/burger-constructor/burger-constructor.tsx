@@ -23,7 +23,7 @@ import { useHistory } from "react-router-dom";
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { ingredientsConstructor, cartModalState } =
+  const { ingredientsConstructor, cartModalState, orderName, isLoading } =
     useSelector(ingredientsSelector);
   const { isAuthorized } = useSelector(authorizationSelector);
 
@@ -41,8 +41,12 @@ const BurgerConstructor = () => {
     if (isAuthorized === false) {
       history.replace({ pathname: "/login" });
     } else {
-      // @ts-ignore
-      dispatch(fetchOrder(ingredientsConstructor));
+      const constrBuns = ingredientsConstructor.filter(
+        (el) => el.type === "bun"
+      );
+      const order = ingredientsConstructor.concat(constrBuns);
+      //@ts-ignore
+      dispatch(fetchOrder(order));
     }
   };
 
@@ -77,7 +81,7 @@ const BurgerConstructor = () => {
     >
       {ingredientsConstructor.length === 0 && (
         <span className="text text_type_main-medium">
-          Перетащите сюда ингредиенты
+          Перетащите сюда ингредиенты. Начните с выбора булки
         </span>
       )}
 
@@ -87,6 +91,8 @@ const BurgerConstructor = () => {
             // @ts-ignore
             dispatch(closeOrderModal());
           }}
+          // @ts-ignore
+          title={orderName}
         >
           <OrderDetails />
         </Modal>
@@ -124,7 +130,7 @@ const BurgerConstructor = () => {
         </div>
       )}
 
-      {ingredientsConstructor.length >= 1 && (
+      {ingredientsConstructor.length >= 1 && bun && (
         <div className={`${styles.total} mr-4 mt-10`}>
           <div className={`mr-10`}>
             <span className={"text text_type_digits-medium mr-2"}>
@@ -137,7 +143,9 @@ const BurgerConstructor = () => {
             type="primary"
             size="medium"
             // @ts-ignore
-            onClick={sendOrder}
+            onClick={() => {
+              sendOrder();
+            }}
           >
             Оформить заказ
           </Button>

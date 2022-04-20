@@ -1,10 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styles from "./profile-navigation.module.css";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../../services/slices/authorization-slice";
 
 export const ProfileNavigation = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const loggingOut = () => {
     dispatch(logOut());
@@ -41,9 +42,16 @@ export const ProfileNavigation = () => {
           >
             <span className="text text_type_main-medium mb-10">Выход</span>
           </NavLink>
-          <span className=" text text_type_main-small text_color_inactive mt-20">
-            В этом разделе вы можете изменить свои персональные данные
-          </span>
+          {location.pathname === "/profile" && (
+            <span className=" text text_type_main-small text_color_inactive mt-20">
+              В этом разделе вы можете изменить свои персональные данные
+            </span>
+          )}
+          {location.pathname === "/profile/orders" && (
+            <span className=" text text_type_main-small text_color_inactive mt-20">
+              В этом разделе вы можете просмотреть свою историю заказов
+            </span>
+          )}
         </nav>
       </section>
     </>

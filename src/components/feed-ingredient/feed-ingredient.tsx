@@ -1,11 +1,11 @@
+import styles from "./feed-ingredient.module.css";
+import PropTypes from "prop-types";
 
-import styles from './feed-ingredient.module.css';
-
-
-export const FeedIngredient = () => {
-    return (
-      
-        <img src={'https://code.s3.yandex.net/react/code/core.png'} alt={'иконка'} className={styles.image} />
-      
-    );
-  }
+export const FeedIngredient = ({ data }) => {
+  return (
+    <img src={data.image_mobile} alt={data.name} className={styles.image} />
+  );
+};
+FeedIngredient.propTypes = {
+  data: PropTypes.object.isRequired,
+};

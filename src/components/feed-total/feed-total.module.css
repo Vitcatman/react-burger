@@ -1,26 +1,26 @@
 .wrapper {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .done {
-    color: #00CCCC;
-  }
+  color: #00cccc;
+}
 
-  .list {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    max-height: 200px;
-    width: 276px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    column-gap: 8px;
-  }
+.list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: 200px;
+  width: 250px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  column-gap: 15px;
+}

@@ -24,6 +24,9 @@ const Modal = (props) => {
     <>
       <ModalOverlay {...props} />
       <div className={styles.modal}>
+        <h2 className={`${styles.title} mt-5 ml-10 text text_type_main-large`}>
+          {props.title}
+        </h2>
         <button className={styles.close_button} onClick={props.close}>
           <CloseIcon type="primary" />
         </button>

@@ -1,5 +1,7 @@
 .list {
-    max-width: 600px;
-    width: 100%;
-    overflow-y: auto;
+  width: 844px;
+  width: 100%;
+  overflow-y: auto;
+  list-style-type: none;
+  padding: 0;
 }

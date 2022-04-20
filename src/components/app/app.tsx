@@ -10,15 +10,16 @@ import {
   ForgotPassword,
   ResetPassword,
   Profile,
-  OrderFeed
+  OrderFeed,
+  OrderPage,
 } from "../../pages/index";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import Modal from "../modal/modal";
 import AppHeader from "../app-header/app-header";
+import { FeedDetails } from "../feed-details/feed-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import {
   updateToken,
-  getUserData,
   authorizationSelector,
 } from "../../services/slices/authorization-slice";
 import { fetchIngredients } from "../../services/slices/ingredients-slice";
@@ -39,7 +40,6 @@ function App() {
     if (localStorage.getItem("refreshToken") && !isAuthorized && !background) {
       dispatch(updateToken());
     }
-    
   }, []);
 
   return (
@@ -67,8 +67,11 @@ function App() {
         <Route path="/ingredients/:id" exact={true}>
           <IngredientPage />
         </Route>
-        <Route path="/feed">
+        <Route path="/feed" exact={true}>
           <OrderFeed />
+        </Route>
+        <Route path="/feed/:id">
+          <OrderPage />
         </Route>
         <Route>
           <NotFound404 />
@@ -76,11 +79,18 @@ function App() {
       </Switch>
 
       {background && (
-        <Route path="/ingredients/:id" exact={true}>
-          <Modal close={closeModal}>
-            <IngredientDetails />
-          </Modal>
-        </Route>
+        <Switch>
+          <Route path="/ingredients/:id" exact={true}>
+            <Modal close={closeModal}>
+              <IngredientDetails />
+            </Modal>
+          </Route>
+          <Route path="/feed/:id" exact={true}>
+            <Modal close={closeModal}>
+              <FeedDetails />
+            </Modal>
+          </Route>
+        </Switch>
       )}
     </>
   );
