@@ -6,35 +6,36 @@ import {
   BurgerIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink, Link } from 'react-router-dom';
 
 const AppHeader = () => {
   return (
     <header className={style.header}>
       <nav className={style.navbar}>
         <div className={style.main_navigation}>
-          <a href={"#"} className={`${style.link} mr-5`}>
+          <NavLink to={"/"} exact className={`${style.link} mr-5`} activeClassName={style.link_active}>
             <BurgerIcon type="primary" />
             <span className="text text_type_main-default ml-2">
               Конструктор
             </span>
-          </a>
-          <a href={"#"} className={`${style.link} ml-5`}>
+          </NavLink>
+          <NavLink to={'/profile/orders'} exact className={`${style.link} ml-5`} activeClassName={style.link_active}>
             <ListIcon type="secondary" />
-            <span className="text text_type_main-default text_color_inactive ml-2">
+            <span className="text text_type_main-default ml-2">
               Лента заказов
             </span>
-          </a>
+          </NavLink>
         </div>
         <div className={style.container}>
-          <a href={"#"} className={style.link}>
+          <NavLink to={"/"} className={style.link}>
             <Logo />
-          </a>
-          <a href={"#"} className={style.link}>
+          </NavLink>
+          <NavLink to={"/profile"} exact className={style.link} activeClassName={style.link_active}>
             <ProfileIcon type="secondary" />
-            <span className="text text_type_main-default text_color_inactive ml-2">
+            <span className="text text_type_main-default ml-2">
               Личный кабинет
             </span>
-          </a>
+          </NavLink>
         </div>
       </nav>
     </header>

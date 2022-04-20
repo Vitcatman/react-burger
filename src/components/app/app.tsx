@@ -1,37 +1,84 @@
-import { useState, useEffect, useReducer } from "react";
-import style from "./app.module.css";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
+import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchIngredients,
-  ingredientsSelector,
-} from "../../services/slices/ingredients-slice";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+  HomePage,
+  Login,
+  NotFound404,
+  IngredientPage,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+} from "../../pages/index";
+import { ProtectedRoute } from "../protected-route/protected-route";
+import Modal from "../modal/modal";
+import AppHeader from "../app-header/app-header";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import {
+  updateToken,
+  getUserData,
+  authorizationSelector,
+} from "../../services/slices/authorization-slice";
+import { fetchIngredients } from "../../services/slices/ingredients-slice";
 
 function App() {
   const dispatch = useDispatch();
-  const { isLoading, hasError } = useSelector(ingredientsSelector);
+  const { isAuthorized } = useSelector(authorizationSelector);
+  const history = useHistory();
+  const location = useLocation();
+  const background = location.state && location.state.background;
+
+  const closeModal = () => {
+    history.goBack();
+  };
 
   useEffect(() => {
     dispatch(fetchIngredients());
+    if (localStorage.getItem("refreshToken") && !isAuthorized && !background) {
+      dispatch(updateToken());
+    }
+    
   }, []);
 
   return (
     <>
       <AppHeader />
-      {!isLoading && !hasError && (
-        <main className={style.main}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
+      <Switch location={background || location}>
+        <Route path="/" exact={true}>
+          <HomePage />
+        </Route>
+        <Route path="/login" exact={true}>
+          <Login />
+        </Route>
+        <Route path="/register" exact={true}>
+          <Register />
+        </Route>
+        <Route path="/forgot-password" exact={true}>
+          <ForgotPassword />
+        </Route>
+        <Route path="/reset-password" exact={true}>
+          <ResetPassword />
+        </Route>
+        <ProtectedRoute path="/profile">
+          <Profile />
+        </ProtectedRoute>
+        <Route path="/ingredients/:id" exact={true}>
+          <IngredientPage />
+        </Route>
+        <Route>
+          <NotFound404 />
+        </Route>
+      </Switch>
+
+      {background && (
+        <Route path="/ingredients/:id" exact={true}>
+          <Modal close={closeModal}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
       )}
     </>
   );
 }
-
 export default App;

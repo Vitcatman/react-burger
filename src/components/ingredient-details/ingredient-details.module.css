@@ -1,7 +1,6 @@
 .title {
   height: 64px;
-  align-self: flex-start;
-  display:flex;
+  display: flex;
   align-items: center;
 }
 

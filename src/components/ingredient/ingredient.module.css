@@ -16,6 +16,11 @@
   text-align: center;
 }
 
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .price {
   display: flex;
 }
