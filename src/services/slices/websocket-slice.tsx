@@ -24,10 +24,6 @@ export const websocketSlice = createSlice({
       state.isConnected = false;
       state.hasError = true;
     },
-    wsStop: (state) => {
-      state.isConnected = false;
-      state.hasError = false;
-    },
     wsClose: (state) => {
       state.isConnected = false;
       state.hasError = false;
@@ -40,7 +36,7 @@ export const websocketSlice = createSlice({
   },
 });
 
-export const { wsStart, wsStop, wsSuccess, wsError, wsClose, saveData } =
+export const { wsStart, wsSuccess, wsError, wsClose, saveData } =
   websocketSlice.actions;
 export const websocketActions = websocketSlice.actions;
 
