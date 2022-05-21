@@ -14,8 +14,6 @@ type TFeedItem = {
   data: TFeed;
 };
 
-
-
 export const FeedItem: FC<TFeedItem> = ({ data }) => {
   const { ingredients } = useSelector(ingredientsSelector);
   const location = useLocation();

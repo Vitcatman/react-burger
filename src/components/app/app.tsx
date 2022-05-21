@@ -1,6 +1,6 @@
 import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { TLocation } from '../../utils/types';
+import { TLocation } from "../../utils/types";
 import {
   HomePage,
   Login,

@@ -11,7 +11,7 @@ import { useAppSelector, useAppDispatch } from "../../services";
 export const OrderPage: FC = () => {
   const { feed } = useAppSelector(websocketSelector);
   const dispatch = useAppDispatch();
-  const { id } = useParams<{id: string}>();
+  const { id } = useParams<{ id: string }>();
   const [activeOrder, setActiveOrder] = useState<[] | TFeed>([]);
 
   useEffect(() => {
