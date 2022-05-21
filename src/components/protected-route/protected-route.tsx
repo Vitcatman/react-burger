@@ -12,7 +12,7 @@ export const ProtectedRoute = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={() =>
-        isAuthorized ? (
+        getCookie("accessToken") ? (
           children
         ) : (
           <Redirect to={{ pathname: "/login", state: { from: location } }} />

@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.name {
+  align-self: flex-start;
+}
+
+.number {
+  align-self: center;
+}
+
+.done {
+  color: #00cccc;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-height: 330px;
+  overflow-y: auto;
+  gap: 16px;
+}
+
+.ingredient {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.wrap {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 100%;
+  object-fit: cover;
+  border: 2px solid transparent;
+  background: linear-gradient(black, black) padding-box,
+    linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%) border-box;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+}

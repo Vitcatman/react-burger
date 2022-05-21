@@ -1,15 +1,17 @@
 import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
 import { baseUrl } from "../../utils/data";
 import { checkResponse } from "../../utils/check-response";
+import {getCookie} from "../../utils/cookies"
 
 const initialState = {
   ingredients: [],
-  isLoading: true,
+  isLoading: false,
   hasError: false,
   ingredientDetails: null,
   ingredientModalState: false,
   ingredientsConstructor: [],
   orderNumber: 0,
+  orderName: "", 
   cartModalState: false,
 };
 
@@ -27,7 +29,8 @@ const ingredientsSlice = createSlice({
     },
     addIngredient: {
       // @ts-ignore
-      reducer: (state, { payload }) => {
+      reducer: 
+      (state, { payload }) => {
         state.ingredientsConstructor.push(payload);
       },
       // @ts-ignore
@@ -82,10 +85,8 @@ const ingredientsSlice = createSlice({
         state.hasError = `Проблема с загрузкой данных`;
       })
       .addCase(fetchOrder.pending, (state) => {
-        // @ts-ignore
-        state.loading = true;
-        // @ts-ignore
-        state.error = false;
+        state.isLoading = true;
+        state.hasError = false;
         state.orderNumber = 0;
       })
       .addCase(fetchOrder.fulfilled, (state, action) => {
@@ -93,11 +94,11 @@ const ingredientsSlice = createSlice({
         state.hasError = false;
         state.ingredientsConstructor = [];
         state.orderNumber = action.payload.order.number;
+        state.orderName = action.payload.name;
         state.cartModalState = true;
       })
       .addCase(fetchOrder.rejected, (state) => {
-        // @ts-ignore
-        state.loading = false;
+        state.isLoading = false;
         // @ts-ignore
         state.error = `Ошибка отправки заказа`;
       })
@@ -125,10 +126,11 @@ export const fetchOrder = createAsyncThunk(
     try {
       const res = await fetch(`${baseUrl}/orders`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+        authorization: getCookie("accessToken") },
         body: JSON.stringify({
           // @ts-ignore
-          ingredients: ingredientsConstructor.map((el) => el._id),
+          ingredients: ingredientsConstructor.map((el) => el._id)
         }),
       });
       const newData = await checkResponse(res);
