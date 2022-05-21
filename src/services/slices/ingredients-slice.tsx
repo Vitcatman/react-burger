@@ -1,9 +1,23 @@
-import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, nanoid, PayloadAction } from "@reduxjs/toolkit";
 import { baseUrl } from "../../utils/data";
 import { checkResponse } from "../../utils/check-response";
-import {getCookie} from "../../utils/cookies"
+import {getCookie} from "../../utils/cookies";
+import { TIngredient, TFeed } from "../../utils/types";
+import { TRootState } from "../index"
 
-const initialState = {
+interface TInitialState {
+  ingredients: TIngredient[],
+  isLoading: boolean,
+  hasError: boolean,
+  ingredientDetails: null |  TIngredient[],
+  ingredientModalState: boolean,
+  ingredientsConstructor: TIngredient[],
+  orderNumber: number,
+  orderName: string, 
+  cartModalState: boolean,
+};
+
+const initialState: TInitialState = {
   ingredients: [],
   isLoading: false,
   hasError: false,
@@ -22,21 +36,19 @@ const ingredientsSlice = createSlice({
     showIngredientModal: (state, action) => {
       state.ingredientDetails = action.payload;
       state.ingredientModalState = true;
+      console.log(state.ingredientDetails)
     },
     hideIngredientModal: (state) => {
       state.ingredientDetails = null;
       state.ingredientModalState = false;
     },
     addIngredient: {
-      // @ts-ignore
       reducer: 
-      (state, { payload }) => {
+      (state, { payload }: PayloadAction<TIngredient>) => {
         state.ingredientsConstructor.push(payload);
       },
-      // @ts-ignore
       prepare: (item) => {
         const id = nanoid();
-        // @ts-ignore
         return { payload: { id, ...item } };
       },
     },
@@ -53,14 +65,14 @@ const ingredientsSlice = createSlice({
         state.ingredientsConstructor.filter((i) => i.type === "bun")
       );
     },
-    removeIngredient: (state, action) => {
-      if (action.payload.type === "bun")
+    removeIngredient: (state, { payload }) => {
+      if (payload.type === "bun")
         state.ingredientsConstructor = state.ingredientsConstructor.filter(
           (i) => i.type !== "bun"
         );
       else {
         state.ingredientsConstructor = state.ingredientsConstructor.filter(
-          (item) => item.id !== action.payload.id
+          (item) => item.id !== payload.id
         );
       }
     },
@@ -108,13 +120,12 @@ const ingredientsSlice = createSlice({
 
 export const fetchIngredients = createAsyncThunk(
   "ingredients/fetchIngredients",
-  async () => {
+  async (_, {rejectWithValue}) => {
     try {
-      const res = await fetch(`${baseUrl}/ingredients`);
+      const res: Response = await fetch(`${baseUrl}/ingredients`);
       const newData = await checkResponse(res);
       return newData;
-    } catch (err) {
-      // @ts-ignore
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
@@ -122,27 +133,25 @@ export const fetchIngredients = createAsyncThunk(
 
 export const fetchOrder = createAsyncThunk(
   "ingredients/fetchOrder",
-  async (ingredientsConstructor, { rejectWithValue }) => {
+  async (ingredientsConstructor: Array<TIngredient>, { rejectWithValue }) => {
     try {
       const res = await fetch(`${baseUrl}/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
         authorization: getCookie("accessToken") },
         body: JSON.stringify({
-          // @ts-ignore
           ingredients: ingredientsConstructor.map((el) => el._id)
         }),
       });
       const newData = await checkResponse(res);
       return newData;
-    } catch (err) {
-      // @ts-ignore
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
 );
 
-export const ingredientsSelector = (state) => state.ingredients;
+export const ingredientsSelector = (state: TRootState) => state.ingredients;
 
 export const ingredientsReducer = ingredientsSlice.reducer;
 
@@ -151,7 +160,6 @@ export const {
   hideIngredientModal,
   addIngredient,
   dragIngredients,
-  removeOrderModal,
   removeIngredient,
   closeOrderModal,
 } = ingredientsSlice.actions;

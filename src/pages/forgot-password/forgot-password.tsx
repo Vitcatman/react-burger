@@ -1,4 +1,4 @@
-import {useState } from "react";
+import {useState, KeyboardEvent, FormEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AppHeader from "../../components/app-header/app-header";
@@ -19,16 +19,15 @@ export const ForgotPassword = () => {
   const { forgotPasswordSuccess, isAuthorized } = useSelector(authorizationSelector);
   const dispatch = useDispatch();
 
-  const formChange = (e) => {
+  const formChange = (e: { target: { name: string; value: string } }) => {
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
     });
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(forgotPassword(formValue));
   };
 

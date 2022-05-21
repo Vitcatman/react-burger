@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState, FormEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import AppHeader from "../../components/app-header/app-header";
 import styles from "./reset-password.module.css";
+import { useAppDispatch, useAppSelector } from "../../services/index";
 import {
   Input,
   PasswordInput,
@@ -19,21 +19,20 @@ export const ResetPassword = () => {
     token: "",
   });
 
-  const { resetPasswordSuccess, hasError, isAuthorized } = useSelector(
+  const { resetPasswordSuccess, hasError, isAuthorized } = useAppSelector(
     authorizationSelector
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const formChange = (e) => {
+  const formChange = (e: { target: { name: string; value: string } }) => {
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
     });
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(resetPass(formValue));
   };
   return (

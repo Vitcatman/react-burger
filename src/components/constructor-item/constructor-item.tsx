@@ -3,16 +3,21 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./constructor-item.module.css";
-import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import {
   removeIngredient,
   dragIngredients,
 } from "../../services/slices/ingredients-slice";
 import { useDrag, useDrop } from "react-dnd";
-import { useRef } from "react";
+import { useRef, FC } from "react";
+import { TIngredient } from "../../utils/types";
 
-const ConstructorItem = ({ item, index }) => {
+type TConstructorItem = {
+  item: TIngredient;
+  index: number;
+};
+
+const ConstructorItem: FC<TConstructorItem> = ({ item, index }) => {
   const dispatch = useDispatch();
 
   const ref = useRef(null);
@@ -23,12 +28,10 @@ const ConstructorItem = ({ item, index }) => {
     collect: (monitor: any) => ({ isDragging: monitor.isDragging() }),
   });
 
-  // @ts-ignore
   const [{ handlerId }, drop] = useDrop({
     accept: "cartIngredient",
     collect: (monitor) => ({ handlerId: monitor.getHandlerId() }),
-    drop: (item) => {
-      // @ts-ignore
+    drop: (item: TIngredient) => {
       const dragIndex = item.index;
       const hoverIndex = index;
       if (dragIndex == hoverIndex) return;
@@ -36,7 +39,6 @@ const ConstructorItem = ({ item, index }) => {
     },
     hover: (item, monitor) => {
       if (!ref.current) return;
-      // @ts-ignore
       const dragIndex = item.index;
       const hoverIndex = index;
 
@@ -51,7 +53,6 @@ const ConstructorItem = ({ item, index }) => {
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
       dispatch(dragIngredients({ drag: dragIndex, hover: hoverIndex }));
-      // @ts-ignore
       item.index = hoverIndex;
     },
   });
@@ -77,11 +78,6 @@ const ConstructorItem = ({ item, index }) => {
       />
     </li>
   );
-};
-
-ConstructorItem.propTypes = {
-  index: PropTypes.number,
-  item: PropTypes.object,
 };
 
 export default ConstructorItem;

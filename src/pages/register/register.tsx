@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, Link, useLocation, Redirect } from "react-router-dom";
+import {  useState, FormEvent } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import AppHeader from "../../components/app-header/app-header";
 import styles from "./register.module.css";
 import {
   Input,
@@ -23,16 +22,15 @@ export const Register = () => {
   const dispatch = useDispatch();
   const { isAuthorized } = useSelector(authorizationSelector);
 
-  const formChange = (e) => {
+  const formChange = (e: { target: { name: string; value: string } }) => {
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
     });
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(registerUser(formValue));
   };
 
@@ -72,7 +70,6 @@ export const Register = () => {
             Зарегистрироваться
           </Button>
         </form>
-        {/* { error && <span className={styles.error}>{error}</span> } */}
         <div className={styles.links}>
           <span className="text text_type_main-default text_color_inactive">
             Уже зарегистрированы?

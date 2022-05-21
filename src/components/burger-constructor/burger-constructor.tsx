@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, FC } from "react";
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -15,17 +15,17 @@ import {
   removeIngredient,
 } from "../../services/slices/ingredients-slice";
 import { authorizationSelector } from "../../services/slices/authorization-slice";
-import { useDispatch, useSelector } from "react-redux";
 import ConstructorItem from "../constructor-item/constructor-item";
 import { useDrop } from "react-dnd";
 import { useHistory } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../services/index";
 
-const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+const BurgerConstructor: FC = () => {
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const { ingredientsConstructor, cartModalState, orderName, isLoading } =
-    useSelector(ingredientsSelector);
-  const { isAuthorized } = useSelector(authorizationSelector);
+    useAppSelector(ingredientsSelector);
+  const { isAuthorized } = useAppSelector(authorizationSelector);
 
   const ingr = useMemo(
     () => ingredientsConstructor.filter((item) => item.type !== "bun"),
@@ -45,15 +45,14 @@ const BurgerConstructor = () => {
         (el) => el.type === "bun"
       );
       const order = ingredientsConstructor.concat(constrBuns);
-      //@ts-ignore
       dispatch(fetchOrder(order));
     }
   };
 
-  const finalPrice = useMemo(() => {
+  const finalPrice = useMemo<number>(() => {
     if (bun && ingredientsConstructor.length >= 1)
       return ingr.reduce(
-        (total, curValue) => total + curValue.price,
+        (total: number, curValue: any) => total + curValue.price,
         bun.price * 2
       );
   }, [ingredientsConstructor]);
@@ -88,10 +87,8 @@ const BurgerConstructor = () => {
       {cartModalState && (
         <Modal
           close={() => {
-            // @ts-ignore
             dispatch(closeOrderModal());
           }}
-          // @ts-ignore
           title={orderName}
         >
           <OrderDetails />
@@ -113,7 +110,6 @@ const BurgerConstructor = () => {
       <ul className={`${styles.cart} custom-scroll`}>
         {ingr.length !== 0 &&
           ingr.map((item, index) => (
-            // @ts-ignore
             <ConstructorItem item={item} index={index} key={item.id} />
           ))}
       </ul>

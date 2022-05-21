@@ -1,8 +1,13 @@
 import styles from "./modal-overlay.module.css";
 import PropTypes from "prop-types";
+import { FC, MouseEvent } from "react";
 
-const ModalOverlay = (props) => {
-  return <div className={styles.overlay} onClick={props.close} />;
+type TModalOverlay = {
+  readonly close: (_:MouseEvent) => void
+}
+
+const ModalOverlay: FC<TModalOverlay> = ({close}) => {
+  return <div className={styles.overlay} onClick={close} />;
 };
 
 ModalOverlay.propTypes = {

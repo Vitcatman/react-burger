@@ -1,17 +1,18 @@
 import styles from "./order-page.module.css";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState, FC } from "react";
 import { wsUrl } from "../../utils/data";
 import { FeedDetails } from "../../components/feed-details/feed-details";
 import { wsClose, wsStart } from "../../services/slices/websocket-slice";
 import { websocketSelector } from "../../services/slices/websocket-slice";
+import { TFeed } from "../../utils/types";
+import { useAppSelector, useAppDispatch } from "../../services";
 
-export const OrderPage = () => {
-  const { feed } = useSelector(websocketSelector);
-  const dispatch = useDispatch();
-  const { id } = useParams();
-  const [activeOrder, setActiveOrder] = useState([]);
+export const OrderPage: FC = () => {
+  const { feed } = useAppSelector(websocketSelector);
+  const dispatch = useAppDispatch();
+  const { id } = useParams<{id: string}>();
+  const [activeOrder, setActiveOrder] = useState<[] | TFeed>([]);
 
   useEffect(() => {
     if (feed.length === 0) {
@@ -20,7 +21,6 @@ export const OrderPage = () => {
         dispatch(wsClose());
       };
     }
-
     const currentOrder = feed.find((el) => el._id === id);
     if (currentOrder) setActiveOrder(currentOrder);
   }, [feed]);

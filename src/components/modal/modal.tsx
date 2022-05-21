@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, MouseEvent, ReactNode, FC } from "react";
 import { createPortal } from "react-dom";
 import styles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
@@ -7,11 +7,17 @@ import PropTypes from "prop-types";
 
 const portalContainer = document.getElementById("modal");
 
-const Modal = (props) => {
+type TModal = {
+  readonly close: (_?: MouseEvent) => void;
+  readonly title?: string;
+  readonly children: ReactNode;
+}
+
+const Modal: FC<TModal> = ({close, title, children}) => {
   useEffect(() => {
-    const closeEsc = (evt) => {
+    const closeEsc = (evt: KeyboardEvent) => {
       if (evt.key === "Escape") {
-        props.close();
+        close();
       }
     };
     document.addEventListener("keydown", closeEsc);
@@ -22,24 +28,20 @@ const Modal = (props) => {
 
   return createPortal(
     <>
-      <ModalOverlay {...props} />
+      <ModalOverlay close={close}/>
       <div className={styles.modal}>
         <h2 className={`${styles.title} mt-5 ml-10 text text_type_main-large`}>
-          {props.title}
+          {title}
         </h2>
-        <button className={styles.close_button} onClick={props.close}>
+        <button className={styles.close_button} onClick={close}>
           <CloseIcon type="primary" />
         </button>
-        {props.children}
+        {children}
       </div>
     </>,
     portalContainer!
   );
 };
 
-Modal.propTypes = {
-  close: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-};
 
 export default Modal;

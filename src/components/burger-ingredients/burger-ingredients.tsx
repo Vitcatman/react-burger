@@ -1,15 +1,15 @@
-import { useState, useRef} from "react";
+import { useState, useRef, MutableRefObject, FC} from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from "../ingredient-list/ingredient-list";
 
-const BurgerIngredients = () => {
+const BurgerIngredients: FC = () => {
   const [current, setCurrent] = useState("Булки");
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
   const scrollRef = useRef(null);
-  const clickOnTab = (evt, ref) => {
+  const clickOnTab = (evt: string, ref: MutableRefObject<HTMLDivElement>) => {
     setCurrent(evt);
     ref.current.scrollIntoView({ behavior: "smooth" });
   };

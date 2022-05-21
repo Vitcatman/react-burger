@@ -7,13 +7,20 @@ import { formatDate } from "../../utils/data";
 import { Link, useLocation } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 import { checkOrderStatus } from "../../utils/orderStatus";
-import PropTypes from "prop-types";
+import { TFeed, TIngredient } from "../../utils/types";
+import { FC } from "react";
 
-export const FeedItem = ({ data }) => {
+type TFeedItem = {
+  data: TFeed;
+};
+
+
+
+export const FeedItem: FC<TFeedItem> = ({ data }) => {
   const { ingredients } = useSelector(ingredientsSelector);
   const location = useLocation();
-  let feedIngredients = [];
-
+  let feedIngredients: TIngredient[] = [];
+  
   data.ingredients.forEach((item) => {
     if (item !== null)
       feedIngredients.push(ingredients.find((el) => el._id === item));
@@ -79,7 +86,4 @@ export const FeedItem = ({ data }) => {
       </div>
     </Link>
   );
-};
-FeedItem.propTypes = {
-  data: PropTypes.object.isRequired,
 };

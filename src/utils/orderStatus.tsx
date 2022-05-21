@@ -1,4 +1,4 @@
-export const checkOrderStatus = (status) => {
+export const checkOrderStatus = (status: string) => {
   switch (status) {
     case "done":
       return "Выполнен";

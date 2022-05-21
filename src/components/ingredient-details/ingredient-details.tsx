@@ -5,8 +5,7 @@ import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 
 const IngredientDetails = () => {
   const { ingredients } = useSelector(ingredientsSelector);
-  //@ts-ignore
-  const { id } = useParams();
+  const { id } = useParams<{id:string}>();
   const currentIngredient = ingredients.find((item) => item._id === id);
 
   return (
