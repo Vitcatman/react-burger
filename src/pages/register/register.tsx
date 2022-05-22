@@ -1,6 +1,5 @@
 import {  useState, FormEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import styles from "./register.module.css";
 import {
   Input,
@@ -9,8 +8,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
   registerUser,
-  authorizationSelector,
 } from "../../services/slices/authorization-slice";
+import { useAppSelector, useAppDispatch } from "../../services";
 
 export const Register = () => {
   const [formValue, setFormValue] = useState({
@@ -19,8 +18,8 @@ export const Register = () => {
     name: "",
   });
 
-  const dispatch = useDispatch();
-  const { isAuthorized } = useSelector(authorizationSelector);
+  const dispatch = useAppDispatch();
+  const { isAuthorized } = useAppSelector((state) => state.authorization);
 
   const formChange = (e: { target: { name: string; value: string } }) => {
     setFormValue({

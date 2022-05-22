@@ -1,7 +1,6 @@
 import { useEffect, useState, FormEvent } from "react";
 import styles from "./profile-form.module.css";
 import {
-  authorizationSelector,
   updateUserData,
   updateToken,
   getUserData,
@@ -22,7 +21,7 @@ export const EditForm = () => {
 
   const [buttons, setButtons] = useState(false);
   const { user, hasError, updateSuccess } = useAppSelector(
-    authorizationSelector
+    (state) => state.authorization
   );
   const dispatch = useAppDispatch();
 

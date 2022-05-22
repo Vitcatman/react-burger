@@ -50,5 +50,4 @@ export const { wsStart, wsSuccess, wsError, wsClose, saveData } =
   websocketSlice.actions;
 export const websocketActions = websocketSlice.actions;
 
-export const websocketSelector = (state: TRootState) => state.webSocket;
 export const websocketReducer = websocketSlice.reducer;

@@ -1,18 +1,16 @@
 import styles from "./feed-details.module.css";
 import { useParams } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
-import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 import { useEffect, useState } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import { formatDate } from "../../utils/data";
-import { websocketSelector } from "../../services/slices/websocket-slice";
 import { checkOrderStatus } from "../../utils/orderStatus";
 import { TIngredient, TFeed } from "../../utils/types";
+import { useAppSelector } from "../../services";
 
 export const FeedDetails = () => {
-  const { ingredients } = useSelector(ingredientsSelector);
-  const { feed } = useSelector(websocketSelector);
+  const { ingredients } = useAppSelector((state) => state.ingredients);
+  const { feed } = useAppSelector((state) => state.webSocket);
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<TFeed | null>(null);
   const [orderPrice, setPrice] = useState<number>(0);

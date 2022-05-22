@@ -1,10 +1,8 @@
 import Ingredient from "../ingredient/ingredient";
 import styles from "./ingredient-list.module.css";
-import { ingredientsSelector, showIngredientModal} from '../../services/slices/ingredients-slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { showIngredientModal} from '../../services/slices/ingredients-slice';
 import { FC, MutableRefObject } from 'react';
-import { iteratorSymbol } from "immer/dist/internal";
-import { TIngredient } from "../../utils/types";
+import { useAppSelector, useAppDispatch } from "../../services";
 
 type IIngredientList = {
   tabRef: MutableRefObject<HTMLDivElement>,
@@ -13,8 +11,8 @@ type IIngredientList = {
 }
 
 const IngredientList: FC<IIngredientList> = ({tabRef, name, type}) => {
-  const dispatch = useDispatch();
-  const { ingredients} = useSelector(ingredientsSelector)
+  const dispatch = useAppDispatch();
+  const { ingredients } = useAppSelector((state) => state.ingredients);
 
   return (
     <section>

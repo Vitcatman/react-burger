@@ -8,13 +8,11 @@ import {
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import {
-  ingredientsSelector,
   addIngredient,
   fetchOrder,
   closeOrderModal,
   removeIngredient,
 } from "../../services/slices/ingredients-slice";
-import { authorizationSelector } from "../../services/slices/authorization-slice";
 import ConstructorItem from "../constructor-item/constructor-item";
 import { useDrop } from "react-dnd";
 import { useHistory } from "react-router-dom";
@@ -23,9 +21,9 @@ import { useAppDispatch, useAppSelector } from "../../services/index";
 const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { ingredientsConstructor, cartModalState, orderName, isLoading } =
-    useAppSelector(ingredientsSelector);
-  const { isAuthorized } = useAppSelector(authorizationSelector);
+  const { ingredientsConstructor, cartModalState, orderName } =
+    useAppSelector((state) => state.ingredients);
+  const { isAuthorized } = useAppSelector((state) => state.authorization);
 
   const ingr = useMemo(
     () => ingredientsConstructor.filter((item) => item.type !== "bun"),
@@ -134,11 +132,9 @@ const BurgerConstructor: FC = () => {
             </span>
             <CurrencyIcon type="primary" />
           </div>
-          {/* @ts-ignore */}
           <Button
             type="primary"
             size="medium"
-            // @ts-ignore
             onClick={() => {
               sendOrder();
             }}

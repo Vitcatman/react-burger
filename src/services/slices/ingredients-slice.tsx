@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, nanoid, PayloadAction } from "@reduxjs/t
 import { baseUrl } from "../../utils/data";
 import { checkResponse } from "../../utils/check-response";
 import {getCookie} from "../../utils/cookies";
-import { TIngredient, TFeed } from "../../utils/types";
+import { TIngredient } from "../../utils/types";
 import { TRootState } from "../index"
 
 interface TInitialState {
@@ -93,8 +93,7 @@ const ingredientsSlice = createSlice({
       })
       .addCase(fetchIngredients.rejected, (state) => {
         state.isLoading = false;
-        // @ts-ignore
-        state.hasError = `Проблема с загрузкой данных`;
+        state.hasError = true;
       })
       .addCase(fetchOrder.pending, (state) => {
         state.isLoading = true;
@@ -111,8 +110,7 @@ const ingredientsSlice = createSlice({
       })
       .addCase(fetchOrder.rejected, (state) => {
         state.isLoading = false;
-        // @ts-ignore
-        state.error = `Ошибка отправки заказа`;
+        state.hasError = true;
       })
       .addDefaultCase(() => {});
   },
@@ -150,8 +148,6 @@ export const fetchOrder = createAsyncThunk(
     }
   }
 );
-
-export const ingredientsSelector = (state: TRootState) => state.ingredients;
 
 export const ingredientsReducer = ingredientsSlice.reducer;
 

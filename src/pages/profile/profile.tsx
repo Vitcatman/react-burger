@@ -4,13 +4,12 @@ import { ProfileNavigation } from "../../components/profile/profile-navigation/p
 import { EditForm } from "../../components/profile/profile-form/profile-form";
 import { ProfileOrders } from "../../components/profile/profile-orders/profile-orders";
 import { FC } from "react";
-import { websocketSelector } from "../../services/slices/websocket-slice";
 import { Loader } from "../../components/loader/loader";
 import { TFeed } from "../../utils/types";
 import { useAppSelector } from "../../services";
 
 export const Profile: FC = () => {
-  const { feed } = useAppSelector(websocketSelector);
+  const { feed } = useAppSelector((state) => state.webSocket);
 
   let reversedFeed: TFeed[] = [];
 

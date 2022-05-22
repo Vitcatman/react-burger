@@ -1,18 +1,15 @@
 import styles from "./order-feed.module.css";
 import { FeedList } from "../../components/feed-list/feed-list";
 import { FeedTotal } from "../../components/feed-total/feed-total";
-import { useSelector, useDispatch } from "react-redux";
-import { websocketSelector } from "../../services/slices/websocket-slice";
 import { wsUrl } from "../../utils/data";
 import { wsClose, wsStart } from "../../services/slices/websocket-slice";
 import { useEffect } from "react";
 import { Loader } from "../../components/loader/loader";
-import { ingredientsSelector } from "../../services/slices/ingredients-slice";
+import { useAppSelector, useAppDispatch } from "../../services";
 
 export const OrderFeed = () => {
-  const { feed } = useSelector(websocketSelector);
-  const { isLoading } = useSelector(ingredientsSelector);
-  const dispatch = useDispatch();
+  const { feed } = useAppSelector((state) => state.webSocket);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(wsStart({ url: `${wsUrl}/all` }));

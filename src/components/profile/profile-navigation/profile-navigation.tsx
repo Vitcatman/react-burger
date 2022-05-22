@@ -1,10 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
 import styles from "./profile-navigation.module.css";
-import { useDispatch } from "react-redux";
 import { logOut } from "../../../services/slices/authorization-slice";
+import { useAppDispatch } from "../../../services";
 
 export const ProfileNavigation = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const loggingOut = () => {

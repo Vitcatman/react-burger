@@ -1,6 +1,4 @@
 import styles from "./feed-item.module.css";
-import { useSelector } from "react-redux";
-import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 import { FeedIngredient } from "../feed-ingredient/feed-ingredient";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { formatDate } from "../../utils/data";
@@ -9,13 +7,14 @@ import { nanoid } from "@reduxjs/toolkit";
 import { checkOrderStatus } from "../../utils/orderStatus";
 import { TFeed, TIngredient } from "../../utils/types";
 import { FC } from "react";
+import { useAppSelector } from "../../services";
 
 type TFeedItem = {
   data: TFeed;
 };
 
 export const FeedItem: FC<TFeedItem> = ({ data }) => {
-  const { ingredients } = useSelector(ingredientsSelector);
+  const { ingredients } = useAppSelector((state) => state.ingredients);
   const location = useLocation();
   let feedIngredients: TIngredient[] = [];
   

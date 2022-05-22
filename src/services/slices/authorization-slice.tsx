@@ -318,8 +318,8 @@ export const updateUserData = createAsyncThunk(
   }
 );
 
-export const authorizationSelector = (state: TRootState) => state.authorization;
 export const authorizationReducer = authorizationSlice.reducer;
+
 export const {
   resetResetPassSuccess,
   resetForgotPassSuccess,

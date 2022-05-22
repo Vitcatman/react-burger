@@ -4,11 +4,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient.module.css";
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
-import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 import { Link, useLocation } from "react-router-dom";
 import { FC } from "react";
 import { TIngredient } from "../../utils/types";
+import { useAppSelector } from "../../services";
 
 type TItem = {
   item: TIngredient;
@@ -21,7 +20,7 @@ const Ingredient: FC<TItem> = ({ item }) => {
   });
   const location = useLocation();
 
-  const { ingredientsConstructor } = useSelector(ingredientsSelector);
+  const { ingredientsConstructor } = useAppSelector((state) => state.ingredients)
 
   const counter = ingredientsConstructor.filter(
     (i) => i._id === item._id

@@ -20,14 +20,13 @@ import { FeedDetails } from "../feed-details/feed-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import {
   updateToken,
-  authorizationSelector,
 } from "../../services/slices/authorization-slice";
 import { fetchIngredients } from "../../services/slices/ingredients-slice";
 import { useAppSelector, useAppDispatch } from "../../services";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isAuthorized } = useAppSelector(authorizationSelector);
+  const { isAuthorized } = useAppSelector((state) => state.authorization);
   const history = useHistory();
   const location = useLocation<TLocation>();
   const background = location.state && location.state.background;

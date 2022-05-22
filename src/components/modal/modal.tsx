@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import styles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 
 const portalContainer = document.getElementById("modal");
 
@@ -42,6 +41,5 @@ const Modal: FC<TModal> = ({close, title, children}) => {
     portalContainer!
   );
 };
-
 
 export default Modal;

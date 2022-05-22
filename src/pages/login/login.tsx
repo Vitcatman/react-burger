@@ -9,7 +9,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
   loginRequest,
-  authorizationSelector,
   resetResetPassSuccess,
   resetForgotPassSuccess,
   resetUpdateSuccess,
@@ -31,7 +30,7 @@ export const Login = () => {
     });
   };
 
-  const { isAuthorized, hasError } = useAppSelector(authorizationSelector);
+  const { isAuthorized, hasError } = useAppSelector((state) => state.authorization);
 
   const dispatch = useAppDispatch(); 
   const location = useLocation<TLocation>();

@@ -3,7 +3,6 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./constructor-item.module.css";
-import { useDispatch } from "react-redux";
 import {
   removeIngredient,
   dragIngredients,
@@ -11,6 +10,7 @@ import {
 import { useDrag, useDrop } from "react-dnd";
 import { useRef, FC } from "react";
 import { TIngredient } from "../../utils/types";
+import { useAppDispatch } from "../../services";
 
 type TConstructorItem = {
   item: TIngredient;
@@ -18,7 +18,7 @@ type TConstructorItem = {
 };
 
 const ConstructorItem: FC<TConstructorItem> = ({ item, index }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const ref = useRef(null);
 

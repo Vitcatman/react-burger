@@ -4,12 +4,11 @@ import { useEffect, useState, FC } from "react";
 import { wsUrl } from "../../utils/data";
 import { FeedDetails } from "../../components/feed-details/feed-details";
 import { wsClose, wsStart } from "../../services/slices/websocket-slice";
-import { websocketSelector } from "../../services/slices/websocket-slice";
 import { TFeed } from "../../utils/types";
 import { useAppSelector, useAppDispatch } from "../../services";
 
 export const OrderPage: FC = () => {
-  const { feed } = useAppSelector(websocketSelector);
+  const { feed } = useAppSelector((state) => state.webSocket);
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const [activeOrder, setActiveOrder] = useState<[] | TFeed>([]);

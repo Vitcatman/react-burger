@@ -1,6 +1,5 @@
 import { useState, FormEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import styles from "./reset-password.module.css";
 import { useAppDispatch, useAppSelector } from "../../services/index";
 import {
@@ -10,7 +9,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
   resetPass,
-  authorizationSelector,
 } from "../../services/slices/authorization-slice";
 
 export const ResetPassword = () => {
@@ -20,7 +18,7 @@ export const ResetPassword = () => {
   });
 
   const { resetPasswordSuccess, hasError, isAuthorized } = useAppSelector(
-    authorizationSelector
+    (state) => state.authorization
   );
   const dispatch = useAppDispatch();
 
