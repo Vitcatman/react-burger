@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useHistory, Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import styles from "./not-found.module.css";
 

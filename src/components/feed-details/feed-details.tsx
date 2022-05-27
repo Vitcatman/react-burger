@@ -1,36 +1,31 @@
 import styles from "./feed-details.module.css";
 import { useParams } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
-import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 import { useEffect, useState } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import { formatDate } from "../../utils/data";
-import { websocketSelector } from "../../services/slices/websocket-slice";
 import { checkOrderStatus } from "../../utils/orderStatus";
-import { fetchIngredients } from "../../services/slices/ingredients-slice";
+import { TIngredient, TFeed } from "../../utils/types";
+import { useAppSelector } from "../../services";
 
 export const FeedDetails = () => {
-  const { ingredients } = useSelector(ingredientsSelector);
-  const { feed } = useSelector(websocketSelector);
-  const { id } = useParams();
-  const [data, setData] = useState(null);
-  const [orderPrice, setPrice] = useState(0);
-  const [orderIngredients, setIngredients] = useState([]);
-  const dispatch = useDispatch();
+  const { ingredients } = useAppSelector((state) => state.ingredients);
+  const { feed } = useAppSelector((state) => state.webSocket);
+  const { id } = useParams<{ id: string }>();
+  const [data, setData] = useState<TFeed | null>(null);
+  const [orderPrice, setPrice] = useState<number>(0);
+  const [orderIngredients, setIngredients] = useState<TIngredient[]>([]);
 
   useEffect(() => {
-    if (ingredients === null) dispatch(fetchIngredients());
-  }, [ingredients, feed]);
-
-  useEffect(() => {
-    const activeOrder = feed.find((item) => item._id === id);
+    const activeOrder: TFeed = feed.find((item) => item._id === id);
     if (!data && ingredients && activeOrder) {
       setData(activeOrder);
-      let ingredientsArray = [];
+      let ingredientsArray: TIngredient[] = [];
 
       activeOrder.ingredients.forEach((element) => {
-        let ingr = ingredients.find((item) => item._id === element);
+        let ingr = ingredients.find(
+          (item: TIngredient) => item._id === element
+        );
         if (ingr) {
           ingredientsArray.push({ ...ingr, count: 1 });
         }
@@ -40,8 +35,7 @@ export const FeedDetails = () => {
         );
         setPrice(price);
       });
-
-      const ingredientsCounted = [];
+      let ingredientsCounted: TIngredient[] = [];
       ingredientsArray.forEach((element) => {
         const ingr = ingredientsCounted.find((i) => i._id === element._id);
         if (ingr) {

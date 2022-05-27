@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import styles from "./profile-form.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  authorizationSelector,
   updateUserData,
   updateToken,
   getUserData,
@@ -12,6 +10,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getCookie } from "../../../utils/cookies";
+import { useAppDispatch, useAppSelector } from "../../../services/index";
 
 export const EditForm = () => {
   const [formValue, setFormValue] = useState({
@@ -21,10 +20,12 @@ export const EditForm = () => {
   });
 
   const [buttons, setButtons] = useState(false);
-  const { user, hasError, updateSuccess } = useSelector(authorizationSelector);
-  const dispatch = useDispatch();
+  const { user, hasError, updateSuccess } = useAppSelector(
+    (state) => state.authorization
+  );
+  const dispatch = useAppDispatch();
 
-  const onFormChange = (e) => {
+  const onFormChange = (e: { target: { name: string; value: string } }) => {
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
@@ -37,7 +38,6 @@ export const EditForm = () => {
       localStorage.getItem("refreshToken") &&
       getCookie("accessToken") == null
     ) {
-      // @ts-ignore
       dispatch(updateToken()).then(() => dispatch(getUserData()));
     }
     if (getCookie("accessToken")) {
@@ -50,13 +50,11 @@ export const EditForm = () => {
     });
   }, [user]);
 
-  const formSubmit = (e) => {
+  const formSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (getCookie("accessToken")) {
-      // @ts-ignore
       dispatch(updateUserData(formValue));
     } else {
-      // @ts-ignore
       dispatch(updateToken()).then(() => dispatch(updateUserData(formValue)));
     }
   };

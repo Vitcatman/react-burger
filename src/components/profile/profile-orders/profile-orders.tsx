@@ -3,15 +3,19 @@ import { FeedList } from "../../feed-list/feed-list";
 
 import { wsUrl } from "../../../utils/data";
 import { wsClose, wsStart } from "../../../services/slices/websocket-slice";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, FC } from "react";
 import { getCookie } from "../../../utils/cookies";
 import { Loader } from "../../../components/loader/loader";
-import { ingredientsSelector } from "../../../services/slices/ingredients-slice";
+import { TFeed } from "../../../utils/types";
+import { useAppSelector, useAppDispatch } from "../../../services";
 
-export const ProfileOrders = ({ feed }) => {
-  const dispatch = useDispatch();
-  const { isLoading } = useSelector(ingredientsSelector);
+type TProfileOrders = {
+  feed: TFeed[];
+};
+
+export const ProfileOrders: FC<TProfileOrders> = ({ feed }) => {
+  const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector((state) => state.ingredients);
   const profileToken = getCookie("accessToken").slice(7);
 
   useEffect(() => {

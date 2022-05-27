@@ -1,8 +1,13 @@
 import styles from "./feed-list.module.css";
 import { FeedItem } from "../feed-item/feed-item";
-import PropTypes from "prop-types";
+import { FC } from "react";
+import { TFeed } from "../../utils/types";
 
-export const FeedList = ({ feed }) => {
+type TFeedList = {
+  feed: TFeed[];
+};
+
+export const FeedList: FC<TFeedList> = ({ feed }) => {
   return (
     <ul className={`${styles.list} custom-scroll`}>
       {feed.map((order) => (
@@ -12,7 +17,4 @@ export const FeedList = ({ feed }) => {
       ))}
     </ul>
   );
-};
-FeedList.propTypes = {
-  feed: PropTypes.array.isRequired,
 };

@@ -3,15 +3,15 @@ import { Switch, Route } from "react-router-dom";
 import { ProfileNavigation } from "../../components/profile/profile-navigation/profile-navigation";
 import { EditForm } from "../../components/profile/profile-form/profile-form";
 import { ProfileOrders } from "../../components/profile/profile-orders/profile-orders";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { websocketSelector } from "../../services/slices/websocket-slice";
+import { FC } from "react";
 import { Loader } from "../../components/loader/loader";
+import { TFeed } from "../../utils/types";
+import { useAppSelector } from "../../services";
 
-export const Profile = () => {
-  const { feed } = useSelector(websocketSelector);
+export const Profile: FC = () => {
+  const { feed } = useAppSelector((state) => state.webSocket);
 
-  let reversedFeed = [];
+  let reversedFeed: TFeed[] = [];
 
   if (feed.length > 0) {
     reversedFeed = [...feed].reverse();

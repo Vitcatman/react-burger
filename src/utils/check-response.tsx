@@ -1,4 +1,4 @@
-const checkResponse = async (res) => {
+const checkResponse = async (res: Response) => {
   if (res.ok) {
     return await res.json();
   } else {

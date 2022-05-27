@@ -1,34 +1,31 @@
-import {useState } from "react";
+import {useState, FormEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import AppHeader from "../../components/app-header/app-header";
 import styles from "./forgot-password.module.css";
 import {
   Input, Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
   forgotPassword,
-  authorizationSelector,
 } from "../../services/slices/authorization-slice";
+import { useAppSelector, useAppDispatch } from "../../services";
 
 export const ForgotPassword = () => {
   const [formValue, setFormValue] = useState({
     email: "",
   });
 
-  const { forgotPasswordSuccess, isAuthorized } = useSelector(authorizationSelector);
-  const dispatch = useDispatch();
+  const { forgotPasswordSuccess, isAuthorized } = useAppSelector((state) => state.authorization);
+  const dispatch = useAppDispatch();
 
-  const formChange = (e) => {
+  const formChange = (e: { target: { name: string; value: string } }) => {
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
     });
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(forgotPassword(formValue));
   };
 

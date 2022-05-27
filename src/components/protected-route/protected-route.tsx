@@ -1,11 +1,10 @@
-import { Route, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { authorizationSelector } from "../../services/slices/authorization-slice";
+import { Route, Redirect, RouteProps } from "react-router-dom";
+import { FC} from "react";
 import { useLocation } from "react-router-dom";
 import { getCookie } from "../../utils/cookies";
 
-export const ProtectedRoute = ({ children, ...rest }) => {
-  const { isAuthorized } = useSelector(authorizationSelector);
+
+export const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
   const location = useLocation();
 
   return (

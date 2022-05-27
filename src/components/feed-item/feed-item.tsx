@@ -1,19 +1,23 @@
 import styles from "./feed-item.module.css";
-import { useSelector } from "react-redux";
-import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 import { FeedIngredient } from "../feed-ingredient/feed-ingredient";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { formatDate } from "../../utils/data";
 import { Link, useLocation } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 import { checkOrderStatus } from "../../utils/orderStatus";
-import PropTypes from "prop-types";
+import { TFeed, TIngredient } from "../../utils/types";
+import { FC } from "react";
+import { useAppSelector } from "../../services";
 
-export const FeedItem = ({ data }) => {
-  const { ingredients } = useSelector(ingredientsSelector);
+type TFeedItem = {
+  data: TFeed;
+};
+
+export const FeedItem: FC<TFeedItem> = ({ data }) => {
+  const { ingredients } = useAppSelector((state) => state.ingredients);
   const location = useLocation();
-  let feedIngredients = [];
-
+  let feedIngredients: TIngredient[] = [];
+  
   data.ingredients.forEach((item) => {
     if (item !== null)
       feedIngredients.push(ingredients.find((el) => el._id === item));
@@ -79,7 +83,4 @@ export const FeedItem = ({ data }) => {
       </div>
     </Link>
   );
-};
-FeedItem.propTypes = {
-  data: PropTypes.object.isRequired,
 };

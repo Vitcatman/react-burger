@@ -1,11 +1,15 @@
 import styles from "./feed-total.module.css";
-import { useSelector } from "react-redux";
-import { websocketSelector } from "../../services/slices/websocket-slice";
 import { nanoid } from "@reduxjs/toolkit";
-import PropTypes from "prop-types";
+import { FC } from "react";
+import { TFeed } from "../../utils/types";
+import { useAppSelector } from "../../services";
 
-export const FeedTotal = ({ feed }) => {
-  const { total, totalToday } = useSelector(websocketSelector);
+type TFeedTotal = {
+  feed: TFeed[];
+};
+
+export const FeedTotal: FC<TFeedTotal> = ({ feed }) => {
+  const { total, totalToday } = useAppSelector((state) => state.webSocket);
 
   const done = feed.filter((el) => el.status === "done");
   const inProcess = feed.filter((el) => el.status === "pending");
@@ -55,6 +59,4 @@ export const FeedTotal = ({ feed }) => {
     </>
   );
 };
-FeedTotal.propTypes = {
-  feed: PropTypes.array.isRequired,
-};
+

@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
 import { baseUrl } from "../../utils/data";
+import { TLoginData, TUserData, TPasswordReset } from "../../utils/types";
 import { checkResponse } from "../../utils/check-response";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookies";
+import { TRootState } from "../index";
 
 const initialState = {
   isAuthorized: false,
@@ -50,12 +52,10 @@ const authorizationSlice = createSlice({
         setCookie("accessToken", action.payload.accessToken, {
           expires: 20 * 60,
         });
-        // @ts-ignore
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        localStorage.setItem("refreshToken", action.payload.refreshToken);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
-        // @ts-ignore
         state.hasError = `Registration failed: ${action.payload}`;
       })
       //Login
@@ -71,12 +71,10 @@ const authorizationSlice = createSlice({
         setCookie("accessToken", action.payload.accessToken, {
           expires: 20 * 60,
         });
-        // @ts-ignore
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        localStorage.setItem("refreshToken", action.payload.refreshToken);
       })
       .addCase(loginRequest.rejected, (state, action) => {
         state.isLoading = false;
-        // @ts-ignore
         state.hasError = `Login Failed: ${action.payload}`;
       })
       //Forgot-password
@@ -89,7 +87,6 @@ const authorizationSlice = createSlice({
       })
       .addCase(forgotPassword.rejected, (state, action) => {
         state.isLoading = false;
-        // @ts-ignore
         state.hasError = `Wrong E-mail: ${action.payload}`;
       })
       //Reset-password
@@ -103,7 +100,6 @@ const authorizationSlice = createSlice({
       })
       .addCase(resetPass.rejected, (state, action) => {
         state.isLoading = false;
-        // @ts-ignore
         state.hasError = `Reset Failed: ${action.payload}`;
       })
       //LogOut
@@ -118,11 +114,10 @@ const authorizationSlice = createSlice({
         state.user.name = "";
         state.user.password = "";
         deleteCookie("accessToken");
-        localStorage.removeItem('refreshToken');
+        localStorage.removeItem("refreshToken");
       })
       .addCase(logOut.rejected, (state, action) => {
         state.isLoading = false;
-        // @ts-ignore
         state.hasError = `LogOut Failed: ${action.payload}`;
       })
       //Update Token
@@ -135,13 +130,11 @@ const authorizationSlice = createSlice({
         setCookie("accessToken", action.payload.accessToken, {
           expires: 20 * 60,
         });
-        // @ts-ignore
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.isAuthorized = true;
       })
       .addCase(updateToken.rejected, (state, action) => {
         state.isLoading = false;
-        // @ts-ignore
         state.hasError = `Token Update Failed: ${action.payload}`;
       })
       //Get user Data
@@ -158,7 +151,6 @@ const authorizationSlice = createSlice({
       })
       .addCase(getUserData.rejected, (state, action) => {
         state.isLoading = false;
-        // @ts-ignore
         state.hasError = `User Data Has Not Been Received: ${action.payload}`;
       })
       //Update user Data
@@ -176,7 +168,6 @@ const authorizationSlice = createSlice({
       })
       .addCase(updateUserData.rejected, (state, action) => {
         state.isLoading = false;
-        // @ts-ignore
         state.hasError = `User Data Has Not Been Updated: ${action.payload}`;
       })
       .addDefaultCase(() => {});
@@ -185,7 +176,7 @@ const authorizationSlice = createSlice({
 
 export const registerUser = createAsyncThunk(
   "authorization/registerUser",
-  async (form, { rejectWithValue }) => {
+  async (form: TUserData, { rejectWithValue }) => {
     try {
       const res = await fetch(`${baseUrl}/auth/register`, {
         method: "POST",
@@ -194,8 +185,7 @@ export const registerUser = createAsyncThunk(
       });
       const newData = await checkResponse(res);
       return newData;
-    } catch (err) {
-      // @ts-ignore
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
@@ -203,7 +193,7 @@ export const registerUser = createAsyncThunk(
 
 export const loginRequest = createAsyncThunk(
   "authorization/loginRequest",
-  async (form, { rejectWithValue }) => {
+  async (form: TLoginData, { rejectWithValue }) => {
     try {
       const res = await fetch(`${baseUrl}/auth/login`, {
         method: "POST",
@@ -212,8 +202,7 @@ export const loginRequest = createAsyncThunk(
       });
       const newData = await checkResponse(res);
       return newData;
-    } catch (err) {
-      // @ts-ignore
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
@@ -221,7 +210,7 @@ export const loginRequest = createAsyncThunk(
 
 export const forgotPassword = createAsyncThunk(
   "authorization/forgotPassword",
-  async (email, { rejectWithValue }) => {
+  async (email: { [key: string]: string }, { rejectWithValue }) => {
     try {
       const res = await fetch(`${baseUrl}/password-reset`, {
         method: "POST",
@@ -230,8 +219,7 @@ export const forgotPassword = createAsyncThunk(
       });
       const newData = await checkResponse(res);
       return newData;
-    } catch (err) {
-      // @ts-ignore
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
@@ -239,7 +227,7 @@ export const forgotPassword = createAsyncThunk(
 
 export const resetPass = createAsyncThunk(
   "authorization/resetPassword",
-  async (form, { rejectWithValue }) => {
+  async (form: TPasswordReset, { rejectWithValue }) => {
     try {
       const res = await fetch(`${baseUrl}/password-reset/reset`, {
         method: "POST",
@@ -248,8 +236,7 @@ export const resetPass = createAsyncThunk(
       });
       const newData = await checkResponse(res);
       return newData;
-    } catch (err) {
-      // @ts-ignore
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
@@ -262,12 +249,11 @@ export const logOut = createAsyncThunk(
       const res = await fetch(`${baseUrl}/auth/logout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
+        body: JSON.stringify({ token: localStorage.getItem("refreshToken") }),
       });
       const newData = await checkResponse(res);
       return newData;
-    } catch (err) {
-      // @ts-ignore
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
@@ -282,12 +268,11 @@ export const updateToken = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
+        body: JSON.stringify({ token: localStorage.getItem("refreshToken") }),
       });
       const newData = await checkResponse(res);
-      return newData
-    } catch (err) {
-      // @ts-ignore
+      return newData;
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
@@ -297,18 +282,17 @@ export const getUserData = createAsyncThunk(
   "authorization/getUserData",
   async (data, { rejectWithValue }) => {
     try {
-        const res = await fetch(`${baseUrl}/auth/user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: getCookie("accessToken"),
-          },
-          body: JSON.stringify(data),
-        });
-        const newData = await checkResponse(res);
-        return newData;
-    } catch (err) {
-      // @ts-ignore
+      const res = await fetch(`${baseUrl}/auth/user`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: getCookie("accessToken"),
+        },
+        body: JSON.stringify(data),
+      });
+      const newData = await checkResponse(res);
+      return newData;
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
@@ -316,29 +300,26 @@ export const getUserData = createAsyncThunk(
 
 export const updateUserData = createAsyncThunk(
   "authorization/updateUserData",
-  async (data, { rejectWithValue }) => {
+  async (data: TUserData, { rejectWithValue }) => {
     try {
-     
-        const res = await fetch(`${baseUrl}/auth/user`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: getCookie("accessToken"),
-          },
-          body: JSON.stringify(data),
-        });
-        const newData = await checkResponse(res);
-        return newData; 
-
-    } catch (err) {
-      // @ts-ignore
+      const res = await fetch(`${baseUrl}/auth/user`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: getCookie("accessToken"),
+        },
+        body: JSON.stringify(data),
+      });
+      const newData = await checkResponse(res);
+      return newData;
+    } catch (err: any) {
       return rejectWithValue(err.message);
     }
   }
 );
 
-export const authorizationSelector = (state) => state.authorization;
 export const authorizationReducer = authorizationSlice.reducer;
+
 export const {
   resetResetPassSuccess,
   resetForgotPassSuccess,

@@ -1,6 +1,6 @@
 import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { TLocation } from "../../utils/types";
 import {
   HomePage,
   Login,
@@ -20,15 +20,15 @@ import { FeedDetails } from "../feed-details/feed-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import {
   updateToken,
-  authorizationSelector,
 } from "../../services/slices/authorization-slice";
 import { fetchIngredients } from "../../services/slices/ingredients-slice";
+import { useAppSelector, useAppDispatch } from "../../services";
 
 function App() {
-  const dispatch = useDispatch();
-  const { isAuthorized } = useSelector(authorizationSelector);
+  const dispatch = useAppDispatch();
+  const { isAuthorized } = useAppSelector((state) => state.authorization);
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const background = location.state && location.state.background;
 
   const closeModal = () => {

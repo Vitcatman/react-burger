@@ -1,6 +1,5 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, FormEvent} from "react";
 import { Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation} from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -10,12 +9,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
   loginRequest,
-  authorizationSelector,
   resetResetPassSuccess,
   resetForgotPassSuccess,
   resetUpdateSuccess,
   resetError,
 } from "../../services/slices/authorization-slice";
+import { TLocation } from "../../utils/types";
+import { useAppSelector, useAppDispatch } from "../../services";
 
 export const Login = () => {
   const [formValue, setFormValue] = useState({
@@ -23,21 +23,20 @@ export const Login = () => {
     password: "",
   });
 
-  const onFormChange = (e) => {
+  const onFormChange = (e: {target: {name: string, value: string}}) => {
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
     });
   };
 
-  const { isAuthorized, hasError } = useSelector(authorizationSelector);
+  const { isAuthorized, hasError } = useAppSelector((state) => state.authorization);
 
-  const dispatch = useDispatch(); 
-  const location = useLocation();
+  const dispatch = useAppDispatch(); 
+  const location = useLocation<TLocation>();
 
-  const formSubmit = (e) => {
+  const formSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(loginRequest(formValue));
   };
 
