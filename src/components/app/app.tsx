@@ -49,6 +49,9 @@ function App() {
         <Route path="/" exact={true}>
           <HomePage />
         </Route>
+        <Route path="/react-burger" exact={true}>
+          <HomePage />
+        </Route>
         <Route path="/login" exact={true}>
           <Login />
         </Route>
